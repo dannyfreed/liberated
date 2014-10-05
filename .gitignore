@@ -16,12 +16,7 @@ results
 npm-debug.log
 node_modules
 404.html
-Gruntfile.js
-package.json
-options
-libs
-tasks
-static
+
 
 /.build
 /.firebase.conf
