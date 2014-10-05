@@ -1,0 +1,228 @@
+{# YOUR HOMEPAGE #}
+
+{# First time seeing extend or blocks? Want to know how it works? Tutorial here: http://www.webhook.com #}
+{% extends "templates/partials/base.html" %}
+
+{% block content %}
+<script>
+$('#life').addClass('active');
+</script>
+
+
+  {# Copy this to any page you want articles data on. #}
+  {% set data = get('articles') %}
+
+  {# Sort by most recently published.#}
+  {% set data = data|sort("publish_date", true)%}
+
+  {# This is how you set pagination. #}
+  {% set data = paginate(data, 15) %}
+
+
+  {% if data.length %}
+
+    {# Output articles sorted by most recent publish date #}
+
+
+
+
+  <ul class="pgwSlider">
+  {% for object in data|slice(0,4) %}
+    <li><a href="{{ url(object) }}"><img src="{{ object.image.url }}" alt="{{ object.name }}" data-description="Posted on {{ object.publish_date|date('M. jS') }}" /></a></li>
+  {% endfor %}  
+  </ul>
+
+
+
+<hr>
+<div style="margin-bottom:20px;" class="row">
+  <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+    <div style="top: -2px; position: relative; font-size: 12px;width:150px; display:inline-block" class="select-style">  
+      <select id="sort_by" name="sort_by">
+        <option value="all" selected="selected">Sort By...</option>
+        <option value="all">All</option>
+        <option value="music">Music</option>
+        <option value="video">Videos</option>
+        <option value="other">Other Stuff</option>
+        <option value="all">--</option>
+        <option value="chicago">Chicago</option>
+        <option value="detroit">Detroit</option>
+        <option value="denver">Denver/Boulder</option>
+        <option value="nyc">NYC</option>
+        <option value="sanfran">San Fransisco</option>
+      </select>
+    </div>
+  </div>
+  <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+    <h3 style="text-align:center"><span style="text-transform:capitalize;" id="article_category">All</span> Articles</h3>
+  </div>
+  <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+<form>
+  <input style="float:right; width:80%; height: 31px; top: -2px; position: relative; outline: none;" type="text" id="st-search-input" class="st-search-input">
+</form>
+
+  </div>
+
+  <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12"><hr></div>
+
+</div>
+
+
+<span class="articles">
+{% for object in data|slice(4,1000000000) %}
+    <div data-multicategory="{% for category in object.category%}{{category.name}} {% endfor %}"class="article-block col-xs-12 col-sm-4 col-md-4 col-lg-4">
+      <a class="image-link" href="{{ url(object) }}">
+        <div style="height:160px; background-image:url('{{ object.image.url }}'); background-size:cover;width:100%; margin-bottom:10px;"></div>
+      </a>
+        <a href="{{ url(object) }}">
+          <h2>{{ object.name }}</h2>
+        </a>
+
+      <p style="min-height:100px" class="lead">
+        {{ object.short_version }}
+      </p>
+      <p>
+        <em>Posted on {{ object.publish_date|date('M. jS') }}</em>
+      </p>
+
+      <hr/>
+  
+   
+  
+  </div>
+{% endfor %}
+
+  </span>
+
+    {# The actual pagination template, feel free to edit or replace the default one. #}
+    {% include "templates/partials/paginator.html" %}
+  {% else %}
+    <h2>Nothing to see here</h2>
+    <a href="/cms/">Duder, go add some articles to the CMS</a>
+  {% endif %} <!--checking if theres data-->
+
+
+
+<script>
+$("#sort_by").change(function(){
+  var display_articles = $(this).val();
+  $('#article_category').text(display_articles);
+  if (display_articles === "music"){
+    $('.articles').removeClass('video-articles');
+    $('.articles').removeClass('other-articles');
+    $('.articles').removeClass('chicago-articles');
+    $('.articles').removeClass('detroit-articles');
+    $('.articles').removeClass('denver-articles');
+    $('.articles').removeClass('nyc-articles');
+    $('.articles').removeClass('sanfran-articles');
+
+    $('.articles').addClass('music-articles');
+  }
+  else if (display_articles === "video"){
+    $('.articles').removeClass('music-articles');
+    $('.articles').removeClass('other-articles');
+    $('.articles').removeClass('chicago-articles');
+    $('.articles').removeClass('detroit-articles');
+    $('.articles').removeClass('denver-articles');
+    $('.articles').removeClass('nyc-articles');
+    $('.articles').removeClass('sanfran-articles');
+
+    $('.articles').addClass('video-articles');
+  }
+  else if (display_articles === "other"){
+    $('.articles').removeClass('video-articles');
+    $('.articles').removeClass('music-articles');
+    $('.articles').removeClass('chicago-articles');
+    $('.articles').removeClass('detroit-articles');
+    $('.articles').removeClass('denver-articles');
+    $('.articles').removeClass('nyc-articles');
+    $('.articles').removeClass('sanfran-articles');
+
+    $('.articles').addClass('other-articles');
+  }
+  else if (display_articles === "chicago"){
+    $('.articles').removeClass('video-articles');
+    $('.articles').removeClass('music-articles');
+    $('.articles').removeClass('detroit-articles');
+    $('.articles').removeClass('other-articles');
+    $('.articles').removeClass('denver-articles');
+    $('.articles').removeClass('nyc-articles');
+    $('.articles').removeClass('sanfran-articles');
+
+    $('.articles').addClass('chicago-articles');
+  }
+  else if (display_articles === "detroit"){
+    $('.articles').removeClass('video-articles');
+    $('.articles').removeClass('music-articles');
+    $('.articles').removeClass('chicago-articles');
+    $('.articles').removeClass('other-articles');
+    $('.articles').removeClass('denver-articles');
+    $('.articles').removeClass('nyc-articles');
+    $('.articles').removeClass('sanfran-articles');
+
+    $('.articles').addClass('detroit-articles');
+  }
+  else if (display_articles === "denver"){
+    $('.articles').removeClass('video-articles');
+    $('.articles').removeClass('music-articles');
+    $('.articles').removeClass('chicago-articles');
+    $('.articles').removeClass('other-articles');
+    $('.articles').removeClass('detroit-articles');
+    $('.articles').removeClass('nyc-articles');
+    $('.articles').removeClass('sanfran-articles');
+
+    $('.articles').addClass('denver-articles');
+  }
+  else if (display_articles === "nyc"){
+    $('.articles').removeClass('video-articles');
+    $('.articles').removeClass('music-articles');
+    $('.articles').removeClass('chicago-articles');
+    $('.articles').removeClass('other-articles');
+    $('.articles').removeClass('detroit-articles');
+    $('.articles').removeClass('denver-articles');
+    $('.articles').removeClass('sanfran-articles');
+
+    $('.articles').addClass('nyc-articles');
+  }
+  else if (display_articles === "sanfran"){
+    $('.articles').removeClass('video-articles');
+    $('.articles').removeClass('music-articles');
+    $('.articles').removeClass('chicago-articles');
+    $('.articles').removeClass('other-articles');
+    $('.articles').removeClass('detroit-articles');
+    $('.articles').removeClass('denver-articles');
+    $('.articles').removeClass('nyc-articles');
+
+    $('.articles').addClass('sanfran-articles');
+  }
+
+  else if (display_articles === "all"){
+    $('.articles').removeClass('video-articles');
+    $('.articles').removeClass('music-articles');
+    $('.articles').removeClass('chicago-articles');
+    $('.articles').removeClass('other-articles');
+    $('.articles').removeClass('detroit-articles');
+    $('.articles').removeClass('denver-articles');
+    $('.articles').removeClass('nyc-articles');
+    $('.articles').removeClass('sanfran-articles');
+
+    //$('.articles').addClass('all-articles');
+  }
+
+});
+</script>
+
+  <script>
+    $('.article-block').each(function () {
+      var multicategory = $(this).data("multicategory");
+      $(this).addClass(multicategory);
+
+      
+  });
+  </script>
+
+
+
+{% endblock %}
+
+

@@ -1,0 +1,62 @@
+{# ------------------------------------------------------- #}
+
+{# LIST VIEW OF ALL music #}
+
+{# Webhook uses the SWIG.js (like Djagno/Twig) templating system. Their documentation is here: #}
+{# http://paularmstrong.github.io/swig/docs/tags/ #}
+
+{# Learn about calling data into Webhook pages here: #}
+{# http://www.webhook.com/docs/template-rules-and-filters/ #}
+
+{# ------------------------------------------------------- #}
+
+{# Confused what extends and blocks do? Watch a primer: #}
+{# http://www.webhook.com/docs/template-inheritance-blocks/ #}
+{% extends "templates/partials/base-1-column.html" %}
+
+{# This sets our page <title>. It will append music to the site title defined in base.html #}
+{% block title %}{% parent %} - music{% endblock %}
+
+{% block content %}
+<script>
+$('#music').addClass('active');
+</script>
+  {# The first thing we do is call music data from the CMS. #}
+  {% set data = cms.music %}
+
+  {# Next we sort the data by publish_date. The true bit reverses it so it's newest first. Learn more: #}
+  {# http://www.webhook.com/docs/template-rules-and-filters/#sortproperty_reverseorder #}
+  {% set data = data|sort('publish_date', false) %}
+
+  {# This is how you set pagination. It's always important to do this after your sort. #}
+  {% set data = paginate(data, 5) %}
+
+  {# This forloop can use any data from http:localhost:2000/cms/#/form/music/ #}
+
+
+
+<section class="music" id="music">
+
+  <div class="container">
+  
+    {% for object in data %}
+  <div class="text-centered col-xs-12 col-sm-4 col-md-4 col-lg-4">
+    <h3 style="margin-bottom:10px;">{{ object.name }}</h3>
+    <div class="iframe" style="width:100%;">
+      {{ object.soundcloud_url.html|safe  }}
+    </div>
+    <div style="width:100%; background:black">
+      <a class="col-xs-5 col-sm-5 col-md-5 col-lg-5 transition download btn btn-lg" href="{{ object.download_link }}">Download</a>
+      <a class="col-x-2 col-sm-2 col-md-2 col-lg-2 transition info btn btn-lg" href="{{ object.artist_website }}"><i class="fa fa-info-circle"></i></a>
+      <a class="col-xs-5 col-sm-5 col-md-5 col-lg-5 transition support btn btn-lg" href="{{ object.artist_website }}">Donate</a>
+    </div>
+  </div>
+    {% endfor %}
+
+    </div><!--container-->
+</section>
+  {# The actual pagination template, feel free to edit or replace the default one. #}
+  {% include "templates/partials/paginator.html" %}
+
+{% endblock %}
+

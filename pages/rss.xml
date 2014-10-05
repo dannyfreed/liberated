@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+{# Copy this to any page you want articles data on. #}
+{% set data = get('blog') %}
+
+{# This is how you set pagination. #}
+{% set data = paginate(data, 10) %}
+
+<rss version="2.0">
+  <channel>
+    <title>{{ getSetting('site_name') }}</title>
+    <link>{{ getSetting('site_url') }}</link>
+    <description></description>
+    {% for object in data %}
+      <item>
+        <title>{{ object.name }}</title>
+        <link>{{ getSetting('site_url') }}{{ url(object) }}</link>
+        <description>{{ object.deck }}</description>
+      </item>
+    {% endfor %}
+  </channel>
+</rss>

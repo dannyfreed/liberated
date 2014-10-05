@@ -1,0 +1,32 @@
+{# Copy this to any page you want articles data on. #}
+  {% set data = get('articles') %}
+
+  {# Sort by most recently published.#}
+  {% set data = data|sort("publish_date", true)%}
+
+  {# This is how you set pagination. #}
+  {% set data = paginate(data, 25) %}
+
+
+  {% if data.length %}
+
+    {# Output articles sorted by most recent publish date #}
+
+
+<div id="hot-off-press" style="min-height:500px" class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
+    <h1>Featured Articles</h1>
+
+    {% for object in data|slice(0,3) %}
+        <a href="{{ url(object) }}">
+          <div style="margin:10px">
+            <img style="display:inline-block" src="{{ object.image|imageCrop(50) }}" />
+            
+              <p style="display:inline-block" >{{ object.name }}</p>  
+          </div>
+        </a>
+    {% endfor %}  
+
+    <div style="text-align:center;border:1px solid black; width:100%; height:250px;">Google AdWords</div>
+</div>
+
+{% endblock %}

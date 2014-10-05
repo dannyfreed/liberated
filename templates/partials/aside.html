@@ -1,0 +1,42 @@
+<div id="hot-off-press">
+    <h4>Featured Articles</h4>
+
+    {% for object in data %}
+
+        <a data-featured="{{object.featured_article}}"href="{{ url(object) }}">
+          <div style="margin:5px">
+            <img style="display:inline-block" src="{{ object.image|imageCrop(40) }}" />
+            
+              <p style="display:inline-block" >{{ object.name }}</p>  
+          </div>
+          <hr style="margin:0;">
+        </a>
+
+
+    {% endfor %}  
+
+    <div id="box-ad" style="position:relative; top:10px; text-align:center;border:1px solid black; margin-left:auto; margin-right:auto; width:300px; height:250px;">300x250 Ad</div>
+</div>
+<a href="http://www.instagram.com" target="_blank"><h2 style="margin-bottom:10px; margin-top:20px; text-align:center; background: #e42c40; color:white">Photo Stream +</h2></a>
+<div id="instafeed"></div>
+
+<div class="text-center">
+  {% if about.name %}
+  <br /><br />
+    <h2>{{ about.name }}</h2>
+    <p class="lead">{{ about.one_liner_bio }}</p>
+
+    <a class="twitter-timeline" href="https://twitter.com/{{ about.twitter_username }}" data-widget-id="443912644651528192" data-screen-name="{{ about.twitter_username }}">Tweets by @{{ about.twitter_username }}</a>
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+  {% else %}
+    <h2>Who are you?</h2>
+    <a href="/cms/">Tell us about yourself in the CMS</a>
+  {% endif%}
+</div>
+
+<div style="text-align:center;border:1px solid black; width:100%; margin-left:auto; margin-right:auto; max-width:160px; height:600px;">160x600 Ad</div>
+
+
+
+
+
