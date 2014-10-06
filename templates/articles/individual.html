@@ -60,6 +60,34 @@ $('#life').addClass('active');
   {% endif %}
 
 
+
+
+   {# The first thing we do is call articles data from the CMS. #}
+  {% set data = cms.articles %}
+  
+
+  <h1 style="margin-bottom:20px; margin-top:20px; text-align:center;">Similar Articles</h1>
+  <div style="width:100%"id="similar-articles">
+{% for object in data|slice(0,3) %}
+  <div data-multicategory="{% for category in object.category%}{{category.name}} {% endfor %}"class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
+      <a class="image-link" href="{{ url(object) }}">
+        <div style="height:160px; background-image:url('{{ object.image.url }}'); background-size:cover;width:100%; margin-bottom:10px;"></div>
+      </a>
+      <a href="{{ url(object) }}">
+        <h2>{{ object.name }}</h2>
+      </a>
+
+      <hr/>
+  
+   
+  
+  </div>
+
+
+  {% endfor %}
+  </div>
+
+
   <div id="disqus_thread"></div>
   <script type="text/javascript">
       /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
