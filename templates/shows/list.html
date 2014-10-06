@@ -71,7 +71,11 @@ $('#tickets').addClass('active');
             <!--<td>{{ object.date_time|date('g:i A') }}</td>-->
             <span style="font-size:15px; font-weight:500;"><br />
             <address>
-             {{ object.location.city }}, {{ object.location.state }}
+              {%if object.location.city %}
+                {{ object.location.city }}, {{ object.location.state }}
+                {%else %}
+                {{ object.location.street1 }}
+              {% endif %}
             </address></span>
             </td>
             <td style="width:400px; font-size:15px; font-weight:500;">{{ object.name }}</td>
