@@ -16,7 +16,7 @@ $('#life').addClass('active');
   {% set data = data|sort("publish_date", true)%}
 
   {# This is how you set pagination. #}
-  {% set data = paginate(data, 15) %}
+  {% set data = paginate(data, 25) %}
 
 
   {% if data.length %}
@@ -27,7 +27,7 @@ $('#life').addClass('active');
 
 
   <ul class="pgwSlider">
-  {% for object in data|slice(0,4) %}
+  {% for object in data|where('featured_article','Yes')|slice(0,4) %}
     <li><a href="{{ url(object) }}"><img src="{{ object.image.url }}" alt="{{ object.name }}" data-description="Posted on {{ object.publish_date|date('M. jS') }}" /></a></li>
   {% endfor %}  
   </ul>
@@ -68,32 +68,24 @@ $('#life').addClass('active');
 </div>
 
 
-<span class="articles">
-{% for object in data|slice(4,1000000000) %}
-    <div data-multicategory="{% for category in object.category%}{{category.name}} {% endfor %}"class="article-block col-xs-12 col-sm-4 col-md-4 col-lg-4">
-      <a class="image-link" href="{{ url(object) }}">
-        <div style="height:160px; background-image:url('{{ object.image.url }}'); background-size:cover;width:100%; margin-bottom:10px;"></div>
-      </a>
-        <a href="{{ url(object) }}">
-          <h2>{{ object.name }}</h2>
+<section class="articles">
+{% for object in data %}
+      <div data-multicategory="{% for category in object.category%}{{category.name}} {% endfor %}"class="article-block col-xs-12 col-sm-4 col-md-4 col-lg-4">
+        <a class="image-link" href="{{ url(object) }}">
+          <div style="height:160px; background-image:url('{{ object.image.url }}'); background-size:cover;width:100%; margin-bottom:10px;"></div>
         </a>
+          <a href="{{ url(object) }}">
+            <h2 style="font-size:25px; font-family: 'Questrial', sans-serif;">{{ object.name }}</h2>
+          </a>
 
-      <p style="min-height:100px" class="lead">
-        {{ object.short_version }}
-      </p>
-      <p>
-        <em>Posted on {{ object.publish_date|date('M. jS') }}</em>
-      </p>
-
-      <hr/>
-  
-   
-  
-  </div>
+        <p style="" class="lead">
+          {{ object.short_version }}
+        </p>
+    </div>
 {% endfor %}
 
-  </span>
-
+  </section>
+<div class="pagination">
     {# The actual pagination template, feel free to edit or replace the default one. #}
     {% include "templates/partials/paginator.html" %}
   {% else %}
@@ -101,7 +93,7 @@ $('#life').addClass('active');
     <a href="/cms/">Duder, go add some articles to the CMS</a>
   {% endif %} <!--checking if theres data-->
 
-
+</div>
 
 <script>
 $("#sort_by").change(function(){
@@ -224,5 +216,4 @@ $("#sort_by").change(function(){
 
 
 {% endblock %}
-
 

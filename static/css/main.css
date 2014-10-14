@@ -4,6 +4,13 @@
   }
 }
 /*Reset bootstrap stuff*/
+.pagination>li>a, .pagination>li>span{
+  color:#e42c40;
+}
+.pagination>li>a:hover, .pagination>li>span:hover{
+  color:#CB1A2D;
+}
+
 @media (min-width: 768px) {
   .container {
     max-width: 750px;
@@ -144,7 +151,9 @@ header{
 	font-size:14px;
 }
 .article-block{
-
+  min-height:370px;
+  /*border-bottom:1px solid #eee;*/
+  margin-bottom:25px;
 }
 #hot-off-press a > div:hover{
 	background:rgb(243, 243, 243);
@@ -168,6 +177,7 @@ a:hover{
 	min-height:400px;
 	width:100%;
 	background-size:cover;
+  background-position: center;
 }
 .not-featured{
 	display:none;
@@ -456,6 +466,7 @@ section{
     background-size:cover;
     background-position: center;
     font-size:3em;
+    opacity:0.77;
     color:white;
     padding-top:150px;
     margin-top:40px;
@@ -573,6 +584,7 @@ section#music{
 #music-divider{
   background-image: url('http://thedolab.com/wp-content/uploads/2012/08/GRIZLIVE2.jpeg');
   background-size: cover;
+  
   color:white;
   padding-top:150px;
   height:350px;
@@ -660,7 +672,7 @@ a.download:hover, a.support:hover, a.info:hover{
     overflow: hidden;
     background-color: #fff;
 
-    background: #fff url("http://www.scottgood.com/jsg/blog.nsf/images/arrowdown.gif") no-repeat 90% 50%;
+    background: #fff url("/static/images/assets/arrow.png") no-repeat 90% 50%;
 }
 
 .select-style select {
@@ -682,3 +694,32 @@ a.download:hover, a.support:hover, a.info:hover{
   margin-bottom:6em;
 }
 /*END TICKETS*/
+
+/*ASIDE*/
+.navbar .social-circle{
+  color:rgb(182, 182, 182);
+  border:0;
+}
+.navbar .social-media{
+  line-height: 40px;
+  text-align: left;
+}
+.social-media{
+  text-align:center;
+}
+.social-circle{
+  display:inline-block;
+  height:40px;
+  width:40px;
+  color:#333333;
+  border:0;
+  text-align: center;
+}
+.social-circle .fa{
+  line-height:40px;
+}
+.social-circle .fa:hover{
+  color:#e42c40;
+}
+/*END ASIDE*/
+

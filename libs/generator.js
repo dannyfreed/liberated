@@ -69,8 +69,7 @@ Function = wrap;
  * @param  {Object}   config     Configuration options from .firebase.conf
  * @param  {Object}   logger     Object to use for logging, defaults to no-ops
  */
-module.exports.generator = function (config, logger, fileParser) {
-
+module.exports.generator = function (config, options, logger, fileParser) {
   var self = this;
   var firebaseUrl = config.get('webhook').firebase || 'webhook';
   var liveReloadPort = config.get('connect')['wh-server'].options.livereload;
@@ -128,6 +127,7 @@ module.exports.generator = function (config, logger, fileParser) {
       swigFunctions.setTypeInfo(self.cachedData.typeInfo);
       swigFunctions.setSettings(self.cachedData.settings);
       swigFilters.setSiteDns(self.cachedData.siteDns);
+      swigFilters.setFirebaseConf(config.get('webhook'));
 
       callback(self.cachedData.data, self.cachedData.typeInfo);
       return;
@@ -178,6 +178,7 @@ module.exports.generator = function (config, logger, fileParser) {
         var siteDns = snap.val() || config.get('webhook').siteName + '.webhook.org';
         self.cachedData.siteDns = siteDns;
         swigFilters.setSiteDns(siteDns);
+        swigFilters.setFirebaseConf(config.get('webhook'));
 
         callback(data, typeInfo);
       });
@@ -614,7 +615,7 @@ module.exports.generator = function (config, logger, fileParser) {
               {
                 var val = publishedItems[key];
 
-                if(templateWidgetName) {
+                if(templateWidgetName && val[templateWidgetName]) {
                   overrideFile = 'templates/' + objectName + '/layouts/' + val[templateWidgetName];
                 }
 
@@ -646,6 +647,7 @@ module.exports.generator = function (config, logger, fileParser) {
 
                 if(fs.existsSync(overrideFile)) {
                   writeTemplate(overrideFile, newPath, { item: val });
+                  overrideFile = null;
                 } else {
                   writeTemplate(file, newPath, { item: val });
                 }
@@ -655,7 +657,7 @@ module.exports.generator = function (config, logger, fileParser) {
               {
                 var val = items[key];
 
-                if(templateWidgetName) {
+                if(templateWidgetName && val[templateWidgetName]) {
                   overrideFile = 'templates/' + objectName + '/layouts/' + val[templateWidgetName];
                 }
 
@@ -663,6 +665,7 @@ module.exports.generator = function (config, logger, fileParser) {
 
                 if(fs.existsSync(overrideFile)) {
                   writeTemplate(overrideFile, newPath, { item: val });
+                  overrideFile = null;
                 } else {
                   writeTemplate(file, newPath, { item: val });
                 }
@@ -928,30 +931,6 @@ module.exports.generator = function (config, logger, fileParser) {
     }
   };
 
-  /*
-    Runs 'wh push', used by web listener to give push button on CMS
-  */
-  var pushSite = function(callback) {
-    var command = spawn('wh', ['push'], {
-      stdio: 'inherit',
-      cwd: '.'
-    });
-
-    command.on('error', function() {
-      callback(true);
-    });
-
-    command.on('close', function(exit, signal) {
-
-      if(exit === 0) {
-        callback(null);
-      } else {
-        callback(exit);
-      }
-
-    });
-  }
-
   /**
    * Starts a websocket listener on 0.0.0.0 (for people who want to run wh serv over a network)
    * Accepts messages for generating scaffolding and downloading preset themes.
@@ -1021,14 +1000,6 @@ module.exports.generator = function (config, logger, fileParser) {
               
             sock.send('done:' + JSON.stringify(tmpSlug));
           });
-        } else if (message === 'push') {
-          pushSite(function(error) {
-            if(error) {
-              sock.send('done:' + JSON.stringify({ err: 'Error while pushing site.' }));
-            } else {
-              sock.send('done');
-            }
-          });
         } else if (message === 'build') {
           buildQueue.push({}, function(err) {});
         } else if (message.indexOf('preset_local:') === 0) {
@@ -1040,7 +1011,8 @@ module.exports.generator = function (config, logger, fileParser) {
           }
 
           extractPresetLocal(fileData, function(data) {
-            var command = spawn('npm', ['install'], {
+            var args = ['install'];
+            var command = spawn(options.npm || 'npm', args, {
               stdio: 'inherit',
               cwd: '.'
             });
@@ -1056,8 +1028,7 @@ module.exports.generator = function (config, logger, fileParser) {
             return;
           }
           downloadPreset(url, function(data) {
-
-            var command = spawn('npm', ['install'], {
+            var command = spawn(options.npm || 'npm', ['install'], {
               stdio: 'inherit',
               cwd: '.'
             });
@@ -1081,6 +1052,8 @@ module.exports.generator = function (config, logger, fileParser) {
    * @param  {Function}  done      Callback to call when operation is done
    */
   this.init = function(sitename, secretkey, copyCms, firebase, done) {
+    var oldConf = config.get('webhook');
+
     var confFile = fs.readFileSync('./libs/.firebase.conf.jst');
 
     if(firebase) {
@@ -1088,7 +1061,7 @@ module.exports.generator = function (config, logger, fileParser) {
     }
 
     // TODO: Grab bucket information from server eventually, for now just use the site name
-    var templated = _.template(confFile, { secretKey: secretkey, siteName: sitename, firebase: firebase });
+    var templated = _.template(confFile, { secretKey: secretkey, siteName: sitename, firebase: firebase, embedlyKey: oldConf.embedly || 'your-embedly-key', serverAddr: oldConf.server || 'your-server-address' });
 
     fs.writeFileSync('./.firebase.conf', templated);
 

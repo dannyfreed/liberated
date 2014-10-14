@@ -33,7 +33,6 @@ $('#life').addClass('active');
       <img style="visibility:hidden;margin-left:auto; margin-right:auto;" src="{{ item.image.url }}" class="img-responsive"/>
     </div>
 
-    
 
   
 
@@ -62,8 +61,7 @@ $('#life').addClass('active');
 
 
 
-<hr>
-<hr>
+
 
 
 
@@ -71,12 +69,22 @@ $('#life').addClass('active');
   
 
   <h1 style="margin-bottom:20px; margin-top:20px; text-align:center;">Similar Articles</h1>
-  <div style="width:100%"id="similar-articles">
+  <div data-swiftype-index='false' style="width:100%"id="similar-articles">
 {% set this_articles_category = item.category[0] %}
-{% for article in this_articles_category.articles|sort('publish_date', true)|slice(0,2) %}
-  <p>{{ article.name }}</p>
+{% for article in this_articles_category.articles_relationship|sort('publish_date', true)|slice(0,3) %}
+  
+    <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
+      <a class="image-link" href="{{ url(object) }}">
+        <div style="height:160px; background-image:url('{{ article.image.url }}'); background-size:cover;width:100%; margin-bottom:10px;"></div>
+      </a>
+        <a style="color:black" href="{{ url(article) }}">
+          <h4>{{ article.name }}</h4>
+        </a>
+      </div>
 {% endfor %}
   </div>
+
+
 
 
   <div id="disqus_thread"></div>

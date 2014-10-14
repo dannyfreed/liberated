@@ -757,16 +757,16 @@ $(document).ready(function() {
 
 
 
-
-$('#hot-off-press a').each(function () {
-    if($(this).data('featured') == 'Yes'){
-        $(this).addClass('featured');
-    }
-    else {
-        $(this).addClass('not-featured');
-    }
+//jimmied script to do featured articles. replaced with |where filter
+// $('#hot-off-press a').each(function () {
+//     if($(this).data('featured') == 'Yes'){
+//         $(this).addClass('featured');
+//     }
+//     else {
+//         $(this).addClass('not-featured');
+//     }
  
-});
+// });
 
 
 
