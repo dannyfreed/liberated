@@ -1,50 +1,5 @@
-{% set data = cms.articles %}
-{% set data = data|sort('publish_date', true) %}
-
-<div id="hot-off-press">
-    <!-- <h4>Featured Articles</h4>
-
-   {% for object in data|where('featured_article','Yes')|sort('publish_date', true)|slice(0,3) %}
-
-        <a data-featured="{{object.featured_article}}"href="{{ url(object) }}">
-          <div style="margin:5px">
-            <img style="display:inline-block" src="{{ object.image|imageCrop(40) }}" />
-            
-              <p style="display:inline-block" >{{ object.name }}</p>  
-          </div>
-          <hr style="margin:0;">
-        </a>
-
-
-    {% endfor %}-->
-
-
-    <div id="box-ad" style="position:relative; top:10px; text-align:center;border:1px solid black; margin-left:auto; margin-right:auto; width:300px; height:250px;">300x250 Ad</div>
-</div>
-<a href="mailto:j.kleiman90@gmail.com" target="_blank"><h3 style="font-weight:300; padding-top:3.5px; padding-bottom:7.5px; margin-bottom:10px; margin-top:20px; text-align:center; background: black; color:white">Submit a Song <i style="font-size:65%; line-height:inherit; position:relative; top:6px; margin-right:8px; float:right;" class="fa fa-music"></i></h3></a>
-
-<a href="#" target="_blank"><h3 style="font-weight:300; padding-top:3.5px; padding-bottom:7.5px; margin-bottom:10px; margin-top:20px; text-align:center; background: #666; color:white">Subscribe <i style="font-size:65%; line-height:inherit; position:relative; top:6px; margin-right:8px; float:right;" class="fa fa-envelope"></i></h3></a>
-
-<a href="{{ about.instagram_page }}" target="_blank"><h3 style="font-weight:300; padding-top:3.5px; padding-bottom:7.5px; margin-bottom:10px; margin-top:20px; text-align:center; background: #e42c40; color:white">Photo Stream <i style="font-size:65%; line-height:inherit; position:relative; top:8px; margin-right:8px; float:right;" class="fa fa-instagram"></i></h3></a>
-<div id="instafeed"></div>
-
-<div class="text-center">
-  {% if about.name %}
-  <br /><br />
-    <h2>{{ about.name }}</h2>
-    <p class="lead">{{ about.one_liner_bio }}</p>
-
-    <a class="twitter-timeline" href="https://twitter.com/{{ about.twitter_username }}" data-widget-id="443912644651528192" data-screen-name="{{ about.twitter_username }}">Tweets by @{{ about.twitter_username }}</a>
-    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
-  {% else %}
-    <h2>Who are you?</h2>
-    <a href="/cms/">Tell us about yourself in the CMS</a>
-  {% endif%}
-</div>
-
-<div style="text-align:center;border:1px solid black; width:100%; margin-left:auto; margin-right:auto; max-width:160px; height:600px;">160x600 Ad</div>
-
-    <section style="margin-top:30px;" class="social-media">
+    <section class="social-media">
+      <p>Follow Us:</p>
       <a target="_blank" href="{{ about.facebook_page }}">
         <div class="social-circle facebook">
           <i class="fa fa-facebook fa-lg"></i>
@@ -67,6 +22,62 @@
       </a>
     </section>
 
+    <section id="box-ad" style="position:relative; top:10px; text-align:center;border:1px solid black; margin-left:auto; margin-right:auto; width:300px; height:250px;">300x250 Ad</section>
+
+
+<section id="action-buttons">
+<a style="width:100%" class="btn btn-secondary" href="#" target="_blank">Subscribe <i style="line-height:inherit; position:relative; margin-right:8px; float:right;" class="fa fa-envelope"></i></a>
+
+<a style="border-bottom-right-radius:0px; border-bottom-left-radius:0px; width:100%" class="btn btn-primary" href="{{ about.instagram_page }}"  target="_blank">Photo Stream <i style="line-height:inherit; position:relative; margin-right:8px; float:right;" class="fa fa-instagram"></i></a>
+</section>
+    <div id="instafeed"></div>
+
+<a style="margin-top:10px; width:100%" class="btn btn-primary" href="#" target="_blank">Submit a Song <i style="line-height:inherit; position:relative; margin-right:8px; float:right;" class="fa fa-music"></i></a>
+
+<div class="text-center">
+  {% if about.name %}
+  <br /><br />
+    <h2>{{ about.name }}</h2>
+    <p class="lead">{{ about.one_liner_bio }}</p>
+
+    <a class="twitter-timeline" href="https://twitter.com/{{ about.twitter_username }}" data-widget-id="443912644651528192" data-screen-name="{{ about.twitter_username }}">Tweets by @{{ about.twitter_username }}</a>
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+  {% else %}
+    <h2>Who are you?</h2>
+    <a href="/cms/">Tell us about yourself in the CMS</a>
+  {% endif%}
+</div>
+
+
+
+<div style="margin-bottom:10px; margin-top:10px; text-align:center;border:1px solid black; width:100%; margin-left:auto; margin-right:auto; max-width:160px; height:600px;">160x600 Ad</div>
+
+
+
+
+    <section style="margin-top:30px;" class="social-media">
+    <p>Follow Us:</p>
+      <a target="_blank" href="{{ about.facebook_page }}">
+        <div class="social-circle facebook">
+          <i class="fa fa-facebook fa-lg"></i>
+        </div>
+      </a>
+      <a target="_blank" href="https://twitter.com/{{ about.twitter_username }}">
+        <div class="social-circle twitter">
+          <i class="fa fa-twitter fa-lg"></i>
+        </div>
+      </a>
+      <a target="_blank" href="{{ about.instagram_page }}">
+        <div class="social-circle instagram">
+          <i class="fa fa-instagram fa-lg"></i>
+        </div>
+      </a>
+      <a target="_blank" href="{{ about.soundcloud_page }}">
+        <div class="social-circle soundcloud">
+          <i class="fa fa-soundcloud fa-lg"></i>
+        </div>
+      </a>
+    </section>
 
 
 

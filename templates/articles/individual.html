@@ -8,10 +8,14 @@
 <script>
 $('#life').addClass('active');
 </script>
-
+<meta property="st:image" content="{{ item.image.url }}">
 <title>Liberated | {{ item.name }}</title>
 <style>
 .nav-identifier a{color:#e42c40 !important;}
+iframe{
+  margin-top:10px;
+  margin-bottom:10px;
+}
 </style>
   <h1 style="margin-bottom:10px; font-size:3.5em">{{ item.name }}</h1>
   <p style="font-size:16px; color:#7A7A7A;">
@@ -27,7 +31,7 @@ $('#life').addClass('active');
   </p>
   {% endif %}
 
-  <p style="font-weight:300; color:#7A7A7A;"><em>Tags: {{ item.tags }}</em></p>
+  {% if item.tags %}<p style="font-weight:300; color:#7A7A7A;"><em>Tags: {{ item.tags }}</em></p>{% endif %}
 
     <div class="article-image" style="background-image:url('{{ item.image.url }}');">
       <img style="visibility:hidden;margin-left:auto; margin-right:auto;" src="{{ item.image.url }}" class="img-responsive"/>
@@ -39,9 +43,9 @@ $('#life').addClass('active');
   
   
 
-  <hr/>
 
-  {{ item.body|safe }}
+
+  <div style="font-size:15px;">{{ item.body|safe }}</div>
 
   {# List all images from this gallery. #}
   <hr/>

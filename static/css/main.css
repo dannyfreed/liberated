@@ -101,9 +101,19 @@ p,h1,h2,h3,h4,h5,h6{
 	background:#e42c40;
 	border-color:#DB1A2F;
 }
-.btn-primary:hover{
+.btn-primary:hover, .btn-secondary:active{
 	background:#DB1A2F;
 	border-color:#DB1A2F;
+}
+.btn-secondary{
+  background:#15151e;
+  border-color:#15151e;
+  color:white;
+}
+.btn-secondary:hover, .btn-secondary:active{
+  background:black;
+  border-color:black;
+  color:white;
 }
 section{
 	zoom:1;
@@ -155,9 +165,6 @@ header{
   /*border-bottom:1px solid #eee;*/
   margin-bottom:25px;
 }
-#hot-off-press a > div:hover{
-	background:rgb(243, 243, 243);
-}
 a{
 	color:black;
 }
@@ -175,12 +182,20 @@ a:hover{
 }
 .article-image{
 	min-height:400px;
+  margin-top:10px;
+  margin-bottom:20px;
 	width:100%;
 	background-size:cover;
   background-position: center;
 }
 .not-featured{
 	display:none;
+}
+#similar-articles a{
+  color:black !important;
+}
+#st-launcher-tab{
+  display: none;
 }
 
 /*THIS CONTROLS THE FILTER FUNCTIONALITY*/
@@ -584,7 +599,7 @@ section#music{
 #music-divider{
   background-image: url('http://thedolab.com/wp-content/uploads/2012/08/GRIZLIVE2.jpeg');
   background-size: cover;
-  
+
   color:white;
   padding-top:150px;
   height:350px;
@@ -696,6 +711,21 @@ a.download:hover, a.support:hover, a.info:hover{
 /*END TICKETS*/
 
 /*ASIDE*/
+.fa-lg{
+  font-size:1.6em !important;
+}
+#instafeed{
+  z-index: 1;
+  position: relative;
+  top:-12px;
+}
+#action-buttons{
+  margin-top:2em;
+  z-index:999;
+}
+#action-buttons a{
+  margin-bottom:10px;
+}
 .navbar .social-circle{
   color:rgb(182, 182, 182);
   border:0;

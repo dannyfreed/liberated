@@ -19,6 +19,10 @@ $('#life').addClass('active');
   {% set data = paginate(data, 25) %}
 
 
+
+  {% set categories = get('categories') %}
+
+
   {% if data.length %}
 
     {# Output articles sorted by most recent publish date #}
@@ -26,12 +30,11 @@ $('#life').addClass('active');
 
 
 
-  <ul class="pgwSlider">
+  <ul data-swiftype-index='false' class="pgwSlider">
   {% for object in data|where('featured_article','Yes')|slice(0,4) %}
     <li><a href="{{ url(object) }}"><img src="{{ object.image.url }}" alt="{{ object.name }}" data-description="Posted on {{ object.publish_date|date('M. jS') }}" /></a></li>
   {% endfor %}  
   </ul>
-
 
 
 <hr>
@@ -50,6 +53,10 @@ $('#life').addClass('active');
         <option value="denver">Denver/Boulder</option>
         <option value="nyc">NYC</option>
         <option value="sanfran">San Fransisco</option>
+<!--dynamically pull these. this works, need to use it for JS also tho-->
+<!--{% for category in categories %}
+    <option value="{{ category.name }}">{{ category.name }}</option>
+  {% endfor %}-->
       </select>
     </div>
   </div>
@@ -68,7 +75,7 @@ $('#life').addClass('active');
 </div>
 
 
-<section class="articles">
+<section data-swiftype-index='false' class="articles">
 {% for object in data %}
       <div data-multicategory="{% for category in object.category%}{{category.name}} {% endfor %}"class="article-block col-xs-12 col-sm-4 col-md-4 col-lg-4">
         <a class="image-link" href="{{ url(object) }}">
