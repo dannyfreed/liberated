@@ -15,8 +15,12 @@ $('#life').addClass('active');
   {# Sort by most recently published.#}
   {% set data = data|sort("publish_date", true)%}
 
+  {% set featured_data = data %}
+
   {# This is how you set pagination. #}
-  {% set data = paginate(data, 25) %}
+  {% set data = paginate(data, 18) %}
+
+
 
 
 
@@ -33,7 +37,7 @@ $('#life').addClass('active');
 
 
   <ul data-swiftype-index='false' class="pgwSlider">
-  {% for object in data|where('featured_article','Yes')|slice(0,4) %}
+  {% for object in featured_data|where('featured_article','Yes') %}
     <li><a href="{{ url(object) }}"><img src="{{ object.image.url }}" alt="{{ object.name }}" data-description="Posted on {{ object.publish_date|date('M. jS') }}" /></a></li>
   {% endfor %}  
   </ul>
@@ -55,7 +59,7 @@ $('#life').addClass('active');
         <option value="denver">Denver/Boulder</option>
         <option value="nyc">NYC</option>
         <option value="sanfran">San Fransisco</option>-->
-<!--dynamically pull these. this works, need to use it for JS also tho-->
+<!--dynamically pull these instead-->
 {% for category in categories %}
     <option value="{{ category.name }}">{{ category.name }}</option>
   {% endfor %}
@@ -118,6 +122,7 @@ $("#sort_by").change(function(){
   var activetype = $('#article-holder > section').attr('class');
   var updatedType = activetype.replace("articles ", "");
 
+  $('#article_category').text(updatedType);
 
 
 //go through each article block, hide if doesn't have a class that matches updatedType
