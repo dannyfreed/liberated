@@ -22,6 +22,8 @@ $('#life').addClass('active');
 
   {% set categories = get('categories') %}
 
+  {% set categories = categories|sort("name") %}
+
 
   {% if data.length %}
 
@@ -42,21 +44,21 @@ $('#life').addClass('active');
   <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
     <div style="top: -2px; position: relative; font-size: 12px;width:150px; display:inline-block" class="select-style">  
       <select id="sort_by" name="sort_by">
-        <option value="all" selected="selected">Sort By...</option>
+        <!--<option value="all" selected="selected">Sort By...</option>
         <option value="all">All</option>
         <option value="music">Music</option>
         <option value="video">Videos</option>
         <option value="other">Other Stuff</option>
-        <option value="all">--</option>
+
         <option value="chicago">Chicago</option>
         <option value="detroit">Detroit</option>
         <option value="denver">Denver/Boulder</option>
         <option value="nyc">NYC</option>
-        <option value="sanfran">San Fransisco</option>
+        <option value="sanfran">San Fransisco</option>-->
 <!--dynamically pull these. this works, need to use it for JS also tho-->
-<!--{% for category in categories %}
+{% for category in categories %}
     <option value="{{ category.name }}">{{ category.name }}</option>
-  {% endfor %}-->
+  {% endfor %}
       </select>
     </div>
   </div>
@@ -74,7 +76,7 @@ $('#life').addClass('active');
 
 </div>
 
-
+<span id="article-holder">
 <section data-swiftype-index='false' class="articles">
 {% for object in data %}
       <div data-multicategory="{% for category in object.category%}{{category.name}} {% endfor %}"class="article-block col-xs-12 col-sm-4 col-md-4 col-lg-4">
@@ -92,6 +94,7 @@ $('#life').addClass('active');
 {% endfor %}
 
   </section>
+  </span>
 <div class="pagination">
     {# The actual pagination template, feel free to edit or replace the default one. #}
     {% include "templates/partials/paginator.html" %}
@@ -103,6 +106,37 @@ $('#life').addClass('active');
 </div>
 
 <script>
+// var options = [];
+// $('#sort_by option').each(function() {
+//     options.push({ "id" : this.value, "text" : this.textContent });
+// });
+$("#sort_by").change(function(){
+  var type_to_display = $(this).val();
+  $('.articles').attr('class','articles');
+  $('.articles').addClass(type_to_display);
+
+  var activetype = $('#article-holder > section').attr('class');
+  var updatedType = activetype.replace("articles ", "");
+
+
+
+//go through each article block, hide if doesn't have a class that matches updatedType
+  $('.article-block').each(function(){
+    if ( updatedType === "All"){
+      $(this).css("display","block");
+    }
+    else if( $(this).hasClass(updatedType) ){
+      $(this).css("display","block");
+    }
+    else{
+      $(this).css("display","none");
+    }
+
+  });
+});
+</script>
+
+<!--<script>
 $("#sort_by").change(function(){
   var display_articles = $(this).val();
   $('#article_category').text(display_articles);
@@ -209,18 +243,16 @@ $("#sort_by").change(function(){
   }
 
 });
-</script>
+</script>-->
 
   <script>
-    $('.article-block').each(function () {
+    //add category data from webhook as a class
+  $('.article-block').each(function () {
       var multicategory = $(this).data("multicategory");
-      $(this).addClass(multicategory);
-
-      
+      $(this).addClass(multicategory);   
   });
   </script>
 
 
 
 {% endblock %}
-
