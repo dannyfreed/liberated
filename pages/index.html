@@ -4,6 +4,7 @@
 {% extends "templates/partials/base.html" %}
 
 {% block content %}
+<title>Liberated</title>
 <script>
 $('#life').addClass('active');
 </script>
@@ -60,7 +61,11 @@ $('#life').addClass('active');
         <option value="nyc">NYC</option>
         <option value="sanfran">San Fransisco</option>-->
 <!--dynamically pull these instead-->
-{% for category in categories %}
+{% for category in categories|where('categorize_by','Type of content')%}
+    <option value="{{ category.name }}">{{ category.name }}</option>
+  {% endfor %}
+    <option value="All">--</option>
+  {% for category in categories|where('categorize_by','City')%}
     <option value="{{ category.name }}">{{ category.name }}</option>
   {% endfor %}
       </select>
