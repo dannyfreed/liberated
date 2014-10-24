@@ -7,7 +7,6 @@ lib-cov
 *.pid
 *.gz
 .DS_Store
-cms.html
 
 pids
 logs
@@ -15,7 +14,6 @@ results
 
 npm-debug.log
 node_modules
-404.html
 
 
 /.build

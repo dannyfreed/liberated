@@ -18,9 +18,6 @@ iframe{
 }
 </style>
   <h1 style="margin-bottom:10px; font-size:3.5em">{{ item.name }}</h1>
-  <p style="font-size:16px; color:#7A7A7A;">
-    {{ item.short_version }}
-  </p>
   {% if item.author %}
   <p style="font-weight:300; color:#7A7A7A;">
     <em>Posted by {{ item.author.first }} {{ item.author.last }} on {{ item.publish_date|date('F d Y') }}</em>

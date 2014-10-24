@@ -51,6 +51,11 @@ $('#music').addClass('active');
       <a class="col-x-2 col-sm-2 col-md-2 col-lg-2 transition info btn btn-lg" href="{{ object.artist_website }}"><i class="fa fa-info-circle"></i></a>
       <a class="col-xs-5 col-sm-5 col-md-5 col-lg-5 transition support btn btn-lg" href="{{ object.artist_website }}">Donate</a>
     </div>
+
+    {% for relation in object.artist_allgoodrecs_only %} 
+   {# You can ouput more than just the name. Feel free to output more fields from the CMS. #}
+        <a href="{{ url(relation) }}">{{ relation.name }}</a>{% if not loop.last %},{% endif %}
+    {% endfor %}
   </div>
     {% endfor %}
 

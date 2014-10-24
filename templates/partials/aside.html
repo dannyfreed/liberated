@@ -1,39 +1,63 @@
     <section class="social-media">
       <p>Follow Us:</p>
-      <a target="_blank" href="{{ about.facebook_page }}">
-        <div class="social-circle facebook">
-          <i class="fa fa-facebook fa-2x"></i>
+      
+        <div class="col-xs-6 col-sm-6 col-md-3 col-lg-3 social-circle facebook">
+          <a target="_blank" href="{{ about.facebook_page }}"><i class="fa fa-facebook fa-2x"></i> </a>
         </div>
-      </a>
-      <a target="_blank" href="https://twitter.com/{{ about.twitter_username }}">
-        <div class="social-circle twitter">
-          <i class="fa fa-twitter fa-2x"></i>
+      
+        <div class="col-xs-6 col-sm-6 col-md-3 col-lg-3 social-circle twitter">
+          <a target="_blank" href="https://twitter.com/{{ about.twitter_username }}"><i class="fa fa-twitter fa-2x"></i> </a>
         </div>
-      </a>
-      <br />
-      <a target="_blank" href="{{ about.instagram_page }}">
-        <div class="social-circle instagram">
-          <i class="fa fa-instagram fa-2x"></i>
+     
+        <div class="col-xs-6 col-sm-6 col-md-3 col-lg-3 social-circle instagram">
+          <a target="_blank" href="{{ about.instagram_page }}"><i class="fa fa-instagram fa-2x"></i> </a>
         </div>
-      </a>
-      <a target="_blank" href="{{ about.soundcloud_page }}">
-        <div class="social-circle soundcloud">
-          <i class="fa fa-soundcloud fa-2x"></i>
+      
+        <div class="col-xs-6 col-sm-6 col-md-3 col-lg-3 social-circle soundcloud">
+          <a target="_blank" href="{{ about.soundcloud_page }}"><i class="fa fa-soundcloud fa-2x"></i></a>
         </div>
-      </a>
+      
     </section>
 
     <section id="box-ad" style="position:relative; top:10px; text-align:center;border:1px solid black; margin-left:auto; margin-right:auto; width:300px; height:250px;">300x250 Ad</section>
 
 
 <section id="action-buttons">
-<a style="width:100%" class="btn btn-secondary" href="#" target="_blank">Subscribe <i style="line-height:inherit; position:relative; margin-right:8px; float:right;" class="fa fa-envelope"></i></a>
+<!--<a style="width:100%" class="btn btn-secondary" href="#" target="_blank">Subscribe <i style="line-height:inherit; position:relative; margin-right:8px; float:right;" class="fa fa-envelope"></i></a>-->
+
+<!-- Begin MailChimp Signup Form -->
+<div id="mc_embed_signup">
+<form action="//umich.us4.list-manage.com/subscribe/post?u=facc50092bf21852a282dc6f5&amp;id=bca4450361" method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="validate" target="_blank" novalidate>
+    <div id="mc_embed_signup_scroll">
+  <p>Sign up for our Newsletter</p>
+<div style="margin-bottom:20px;" class="mc-field-group">
+  <input style="padding-left:2px; border-radius:3px; border:1px solid rgb(161, 161, 161); width:60%; display:inline-block;font-size:12px; line-height:26px;" type="email" value="" placeholder="Email Address" name="EMAIL" class="required email" id="mce-EMAIL">
+  <input style="min-width:74px; width:38%; float:right; display:inline-block" type="submit" value="Subscribe" name="subscribe" id="mc-embedded-subscribe" class="btn btn-secondary btn-sm">
+</div>
+  <div id="mce-responses" class="clear">
+    <div class="response" id="mce-error-response" style="display:none"></div>
+    <div class="response" id="mce-success-response" style="display:none"></div>
+  </div>    <!-- real people should not fill this in and expect good things - do not remove this or risk form bot signups-->
+    <div style="position: absolute; left: -5000px;"><input type="text" name="b_facc50092bf21852a282dc6f5_bca4450361" tabindex="-1" value=""></div>
+    </div>
+</form>
+</div>
+
+<!--End mc_embed_signup-->
 
 <a style="border-bottom-right-radius:0px; border-bottom-left-radius:0px; width:100%" class="btn btn-primary" href="{{ about.instagram_page }}"  target="_blank">Photo Stream <i style="line-height:inherit; position:relative; margin-right:8px; float:right;" class="fa fa-instagram"></i></a>
 </section>
-    <div id="instafeed"></div>
 
-<a style="margin-top:10px; width:100%" class="btn btn-primary" href="#" target="_blank">Submit a Song <i style="line-height:inherit; position:relative; margin-right:8px; float:right;" class="fa fa-music"></i></a>
+<div id="instafeed"></div>
+
+<a style="border-bottom-right-radius:0px; border-bottom-left-radius:0px; margin-top:10px; width:100%" class="btn btn-secondary" href="{{ about.song_of_the_week.original_url }}" target="_blank">Song of the Week <i style="line-height:inherit; position:relative; margin-right:8px; float:right;" class="fa fa-volume-up"></i></a>
+
+<a target="_blank" href="{{ about.song_of_the_week.original_url }}">
+  <img id="song-of-week" class="img-responsive" src="{{ about.song_of_the_week.thumbnail_url }}" />
+</a>
+<p style="position:relative; top:-10px; text-align:center">{{ about.song_of_the_week.title }}</p>
+
+<a style="margin-top:10px; width:100%" class="btn btn-secondary" href="mailto:j.kleiman90@gmail.com" target="_blank">Send Us Music <i style="line-height:inherit; position:relative; margin-right:8px; float:right;" class="fa fa-music"></i></a>
 
 <div class="text-center">
   {% if about.name %}
@@ -55,31 +79,27 @@
 
 
 
-
-    <section style="margin-top:30px;" class="social-media">
-    <p>Follow Us:</p>
-      <a target="_blank" href="{{ about.facebook_page }}">
-        <div class="social-circle facebook">
-          <i class="fa fa-facebook fa-2x"></i>
+    <section class="social-media">
+      <p>Follow Us:</p>
+      
+        <div class="col-xs-6 col-sm-6 col-md-3 col-lg-3 social-circle facebook">
+          <a target="_blank" href="{{ about.facebook_page }}"><i class="fa fa-facebook fa-2x"></i> </a>
         </div>
-      </a>
-      <a target="_blank" href="https://twitter.com/{{ about.twitter_username }}">
-        <div class="social-circle twitter">
-          <i class="fa fa-twitter fa-2x"></i>
+      
+        <div class="col-xs-6 col-sm-6 col-md-3 col-lg-3 social-circle twitter">
+          <a target="_blank" href="https://twitter.com/{{ about.twitter_username }}"><i class="fa fa-twitter fa-2x"></i> </a>
         </div>
-      </a>
-      <br />
-      <a target="_blank" href="{{ about.instagram_page }}">
-        <div class="social-circle instagram">
-          <i class="fa fa-instagram fa-2x"></i>
+     
+        <div class="col-xs-6 col-sm-6 col-md-3 col-lg-3 social-circle instagram">
+          <a target="_blank" href="{{ about.instagram_page }}"><i class="fa fa-instagram fa-2x"></i> </a>
         </div>
-      </a>
-      <a target="_blank" href="{{ about.soundcloud_page }}">
-        <div class="social-circle soundcloud">
-          <i class="fa fa-soundcloud fa-2x"></i>
+      
+        <div class="col-xs-6 col-sm-6 col-md-3 col-lg-3 social-circle soundcloud">
+          <a target="_blank" href="{{ about.soundcloud_page }}"><i class="fa fa-soundcloud fa-2x"></i></a>
         </div>
-      </a>
+      
     </section>
+
 
 
 

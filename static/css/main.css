@@ -50,6 +50,9 @@ address{
   background-color: #272727;
   border-color: #272727;
 }
+ul{
+  list-style: none;
+}
 /*END BOOTSTRAP CUSTOMIZATION*/
 
 header {
@@ -719,6 +722,11 @@ a.download:hover, a.support:hover, a.info:hover{
   position: relative;
   top:-12px;
 }
+#song-of-week{
+  z-index: -1;
+  position: relative;
+  top:-12px;
+}
 #action-buttons{
   margin-top:2em;
   z-index:999;
@@ -740,7 +748,6 @@ a.download:hover, a.support:hover, a.info:hover{
 .social-circle{
   display:inline-block;
   height:40px;
-  width:40px;
   color:#333333;
   border:0;
   text-align: center;
@@ -753,3 +760,8 @@ a.download:hover, a.support:hover, a.info:hover{
 }
 /*END ASIDE*/
 
+
+/*Artists Page*/
+.social-buttons{
+  margin-top:2em;
+}

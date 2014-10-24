@@ -791,6 +791,7 @@ $('.iframe iframe').css('margin-bottom:0');
     // });
     // feed.run();
 
+//aside
     var userFeed = new Instafeed({
         get: 'user',
         userId: 16269550,
@@ -801,5 +802,17 @@ $('.iframe iframe').css('margin-bottom:0');
     });
     userFeed.run();
 //Need to give access to your instagram account....see here:  https://instagram.com/oauth/authorize/?client_id=467ede5a6b9b48ae8e03f4e2582aeeb3&redirect_uri=http://instafeedjs.com&response_type=token
+
+//griz
+    var userFeed = new Instafeed({
+        target: 'griz-feed',
+        get: 'user',
+        userId: 16269550,
+        accessToken: '16269550.467ede5.f420519e75b746ce863133bbefe2e3ba',
+        limit: '10',
+        resolution: 'standard_resolution',
+        template: '<a target=_blank" href="{{link}}"><img style="width:100px; height:100px; display:inline-block" src="{{image}}" /></a>'
+    });
+    userFeed.run();
 
 

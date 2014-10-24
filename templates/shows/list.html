@@ -14,12 +14,8 @@
 {# http://www.webhook.com/docs/template-inheritance-blocks/ #}
 {% extends "templates/partials/base-1-column.html" %}
 
-
-{# This sets our page <title>. It will append shows to the site title defined in base.html #}
-{% block title %}{% parent %} - Tickets{% endblock %}
-
 {% block content %}
-<style>Liberated | Shows</style>
+<title>Liberated | Shows</title>
 <script>
 $('#tickets').addClass('active');
 </script>
