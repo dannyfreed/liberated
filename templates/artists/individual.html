@@ -41,11 +41,17 @@ $('#about-us').addClass('active');
       {% if curUrl|endsWith('/griz/') %}
       <div id="griz-feed">
       </div>
-    </div>
+      {% elseif curUrl|endsWith('/manic-focus/') %}
+      <div id="manic-feed">
+      </div>
+      {% elseif curUrl|endsWith('/the-floozies/') %}
+      <div id="floozies-feed">
+      </div>  
       {% endif %}
-      
-      <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
     </div>
+   
+  </div>    
+    
 
     <div style="text-align:center; "class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
         {% for relation in item.music_artist_allgoodrecs_only %}
@@ -62,5 +68,8 @@ $('#about-us').addClass('active');
         {% endfor %}
     </div>
 
-  </div><!--container-->
+  </div><!--container-->      
+
+  <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+
 {% endblock %}
