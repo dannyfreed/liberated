@@ -12,76 +12,18 @@
 {# This sets our page <title>. It will append this artists's name to the site title defined in base.html #}
 {% block title %}{% parent %} - {{ item.name }}{% endblock %}
 {% block content %}
-  <p><a href="{{ url('artists') }}">View a list of all artists</a></p>
-  <!--<h1>{{ item.name }}</h1>
-  <ul>
-      <li>
-        <strong>Name: </strong>
-        {{ item.name }}
-      </li>
-      <li>
-        <strong>Create Date: </strong>
-        {# Format the date. You can use PHP's date function to format as needed. http://php.net/manual/en/function.date.php #}
-        {{ item.create_date|date('F d Y') }}
-      </li>
-      <li>
-        <strong>Last Updated: </strong>
-        {# Format the date. You can use PHP's date function to format as needed. http://php.net/manual/en/function.date.php #}
-        {{ item.last_updated|date('F d Y') }}
-      </li>
-      <li>
-        <strong>Publish Date: </strong>
-        {# Format the date. You can use PHP's date function to format as needed. http://php.net/manual/en/function.date.php #}
-        {{ item.publish_date|date('F d Y') }}
-      </li>
-      <li>
-        <strong>Image: </strong>
-        {# You can pull out a lot more information from the image property. Info here: #}
-        {# http://www.webhook.com/docs/widget-template-reference/#image #}
-        <img src="{{ item.image|imageSize(200) }}" />
-      </li>
-      <li>
-        <strong>Description: </strong>
-        {{ item.description }}
-      </li>
-      <li>
-        <strong>Preview URL: </strong>
-        {{ item.preview_url }}
-      </li>
-      <li>
-        <strong>Slug: </strong>
-        {{ item.slug }}
-      </li>
-      <li>
-        <strong>Facebook Page: </strong>
-        {{ item.facebook_page }}
-      </li>
-      <li>
-        <strong>Twitter Page: </strong>
-        {{ item.twitter_page }}
-      </li>
-      <li>
-        <strong>Instagram Page: </strong>
-        {{ item.instagram_page }}
-      </li>
-      <li>
-        <strong>Soundcloud Page: </strong>
-        {{ item.soundcloud_page }}
-      </li>
-  </ul>-->
-  <div class="container">
+<script>
+$('#about-us').addClass('active');
+</script>
   
-    <div style="margin-top:50px; text-align:center; "class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
-        {% for relation in item.music_artist_allgoodrecs_only %}
-          {# You can ouput more than just the name. Feel free to output more fields from the CMS. #}
-          <a href="{{ url(relation) }}"><h3>{{ relation.name }}</h3></a>{% if not loop.last %}{% endif %}
-          <img style="margin-left:auto;margin-right:auto" class="img-responsive" src="{{ relation.soundcloud_url.thumbnail_url|imageSize(300) }}" />
-        {% endfor %}
-    </div>
+  <div class="container"> 
+    <p><a href="{{ url('artists') }}"> << View all artists</a></p>
 
-    <div style="padding-left:5%; padding-right:5%; text-align:center;" class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+
+    <div style="padding-left:5%; padding-right:5%; text-align:center;" class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
       <h1 style="margin-bottom:10px; text-decoration:underline;">{{item.name}}</h1>
-      <p style="text-align:left;"><strong>BIO:</strong>{{item.description}}</p>
+      <img style="margin-top:10px; margin-bottom:20px; margin-left:auto;margin-right:auto" class="img-responsive" src="{{ item.image|imageSize(300) }}" />
+      <p style="text-align:left;">{{item.description}}</p>
       
       <div class="tickets-button">
         <a style="margin-top:10px; width:55%;" class="btn btn-primary" href="/tickets">Tickets</a>
@@ -93,17 +35,32 @@
       <div class="twitter-feed">
         <a class="twitter-timeline" href="https://twitter.com/{{ item.twitter_username }}" data-widget-id="443912644651528192" data-screen-name="{{ item.twitter_username }}">Tweets by @{{ about.twitter_username }}</a>
       </div>
-      
-      <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
-
-
-    </div>
-    <h3>Instagram Feed:</h3>
+    <div class="artist-instagram">
+      <h3>Instagram Feed:</h3>
       {% set curUrl = getCurrentUrl() %}
       {% if curUrl|endsWith('/griz/') %}
       <div id="griz-feed">
       </div>
+    </div>
       {% endif %}
+      
+      <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+    </div>
+
+    <div style="text-align:center; "class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+        {% for relation in item.music_artist_allgoodrecs_only %}
+          {# You can ouput more than just the name. Feel free to output more fields from the CMS. #}
+          <div style="margin-bottom:40px;">
+            <h3 style="text-decoration:underline; margin-bottom:5px;">{{ relation.name }}</h3>{% if not loop.last %}{% endif %}
+            <a style="margin-right:10px;" target="_blank" href="{{relation.itunes_link}}">Get it on iTunes <i class="fa fa-apple"></i></a>
+            <a style="margin-left:10px;" target="_blank" href="{{relation.itunes_link}}">Get it for Free <i class="fa fa-download"></i></a>
+            <div style="margin-left:auto; margin-right:auto; width:70%;" class="iframe">
+              {{relation.soundcloud_url.html|safe}}
+            </div>
+            
+          </div>
+        {% endfor %}
+    </div>
 
   </div><!--container-->
 {% endblock %}

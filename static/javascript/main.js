@@ -803,7 +803,7 @@ $('.iframe iframe').css('margin-bottom:0');
     userFeed.run();
 //Need to give access to your instagram account....see here:  https://instagram.com/oauth/authorize/?client_id=467ede5a6b9b48ae8e03f4e2582aeeb3&redirect_uri=http://instafeedjs.com&response_type=token
 
-//griz
+//griz instafeed
     var userFeed = new Instafeed({
         target: 'griz-feed',
         get: 'user',
@@ -811,8 +811,12 @@ $('.iframe iframe').css('margin-bottom:0');
         accessToken: '16269550.467ede5.f420519e75b746ce863133bbefe2e3ba',
         limit: '10',
         resolution: 'standard_resolution',
-        template: '<a target=_blank" href="{{link}}"><img style="width:100px; height:100px; display:inline-block" src="{{image}}" /></a>'
+        template: '<div class="insta-container"> <figure style="margin:0;" id="{{id}}"><a href="{{link}}"><img class="img-responsive insta-pic" src="{{image}}" /></a> <figcaption style="font-size:14px; line-height:18px; text-align:left;"><p>{{caption}}</p><p style="padding-left:1px;"><span class="likes"><a href="{{link}}"><i class="fa fa-heart"></i>{{likes}}</a></span><span class="comments"><a href="{{link}}"><i class="fa fa-comment"></i>{{comments}}</a></span></p></figcaption></figure></div>'
     });
     userFeed.run();
+
+
+
+//'<a target=_blank" href="{{link}}"><img style="width:200px; height:200px; display:block; margin-left:auto; margin-right:auto;" src="{{image}}" /></a>'
 
 
