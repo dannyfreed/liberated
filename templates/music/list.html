@@ -31,7 +31,7 @@ $('#music').addClass('active');
   <!--newest first-->
 
   {# This is how you set pagination. It's always important to do this after your sort. #}
-  {% set data = paginate(data, 20) %}
+  {% set data = paginate(data, 51) %}
 
   {# This forloop can use any data from http:localhost:2000/cms/#/form/music/ #}
 
@@ -60,7 +60,7 @@ $('#music').addClass('active');
       {{ object.soundcloud_url.html|safe  }}
     </div>-->
     <div style="width:100%; height:250px; background-position:center; background-size:cover; background-image:url(' {{object.soundcloud_url.thumbnail_url}} ');">
-      <a data-toggle="modal" data-target=".{{object.name|replace(' ', '-', 'g')}}" class="play-button {{object.name|replace(' ', '-', 'g')}}-button" href=""><i class="fa fa-play-circle fa-5x"></i></a>
+      <a data-toggle="modal" data-target=".{{object.name|replace('\(|\)| ', '-', 'g')}}" class="play-button {{object.name|replace(' ', '-', 'g')}}-button" href=""><i class="fa fa-play-circle fa-5x"></i></a>
     </div>
       <a class="col-xs-6 col-sm-6 col-md-6 col-lg-6 transition download btn btn-lg" href="{{ object.download_link }}">Download</a>
       <a class="col-xs-6 col-sm-6 col-md-6 col-lg-6 transition support btn btn-lg" href="{{ object.artist_website }}">Support</a>
@@ -68,7 +68,7 @@ $('#music').addClass('active');
 
 
 
-<div class="{{object.name|replace(' ', '-', 'g')}} modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+<div class="{{object.name|replace('\(|\)| ', '-', 'g')}} modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-sm">
     <div class="modal-content">
       {{object.soundcloud_url.html|safe}}
