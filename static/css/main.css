@@ -4,6 +4,17 @@
   }
 }
 /*Reset bootstrap stuff*/
+@media screen and (min-width: 768px) {
+  .modal-dialog {
+    width: 501px;
+    padding-top: 30px;
+    padding-bottom: 30px;
+  }
+  .modal-content {
+    -webkit-box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+  }
+}
 .pagination>li>a, .pagination>li>span{
   color:#e42c40;
 }
