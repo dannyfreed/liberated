@@ -31,7 +31,7 @@ $('#music').addClass('active');
   <!--newest first-->
 
   {# This is how you set pagination. It's always important to do this after your sort. #}
-  {% set data = paginate(data, 51) %}
+  {% set data = paginate(data, 3) %}
 
   {# This forloop can use any data from http:localhost:2000/cms/#/form/music/ #}
 
@@ -55,7 +55,15 @@ $('#music').addClass('active');
 <section class="music-blocks">
     {% for object in data %}
   <div data-artist="{{object.soundcloud_url.author_name|replace(' ', '-', 'g')}}"style="padding-left:5%; padding-right:5%; margin-bottom:20px;" class="music-block text-centered col-xs-12 col-sm-4 col-md-4 col-lg-4">
-    <h4 style="height:40px">{{ object.soundcloud_url.author_name }} - {{ object.name }}</h4>
+      {% if object.artist_allgoodrecs_only %}
+          <h4 style="font-size:16px; height:37px"><a href="{{ url(object.artist_allgoodrecs_only) }}">{{ object.artist_allgoodrecs_only.name }}</a> - {{ object.name }}</h4>
+      {% else %}
+        <h4 style="font-size:16px; height:37px">{{ object.soundcloud_url.author_name }} - {{ object.name }}</h4>
+      {% endif %}
+      
+
+
+          
     <!--<div class="iframe" style="width:100%;">
       {{ object.soundcloud_url.html|safe  }}
     </div>-->

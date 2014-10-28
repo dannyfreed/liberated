@@ -35,10 +35,15 @@
         {{ item.publish_date|date('F d Y') }}
       </li>
       <li>
-        <strong>Image: </strong>
-        {# You can pull out a lot more information from the image property. Info here: #}
-        {# http://www.webhook.com/docs/widget-template-reference/#image #}
-        <img src="{{ item.image|imageSize(200) }}" />
+        <strong>Instructions: </strong>
+        {{ item.instructions }}
+      </li>
+      <li>
+        <strong>Artist (allgoodrecs only): </strong>
+        {# Relations require some special code. More info about relations here: #}
+        {# http://www.webhook.com/docs/template-rules-and-filters/#getitem #}
+        {# You can ouput more than just the name. Feel free to output more fields from the CMS. #}
+        <a href="{{ url(relation) }}">{{ item.artist_allgoodrecs_only.name }}</a>
       </li>
       <li>
         <strong>Soundcloud URL: </strong>
@@ -46,6 +51,10 @@
       <li>
         <strong>Download Link: </strong>
         {{ item.download_link }}
+      </li>
+      <li>
+        <strong>iTunes Link: </strong>
+        {{ item.itunes_link }}
       </li>
       <li>
         <strong>Donate Link: </strong>
@@ -58,32 +67,6 @@
       <li>
         <strong>Slug: </strong>
         {{ item.slug }}
-      </li>
-      <li>
-        <strong>Artist Website: </strong>
-        {{ item.artist_website }}
-      </li>
-      <li>
-        <strong>Shows (Artist): </strong>
-        {# Relations require some special code. More info about relations here: #}
-        {# http://www.webhook.com/docs/template-rules-and-filters/#getitem #}
-        {% for relation in item.shows_artist %}
-          {# You can ouput more than just the name. Feel free to output more fields from the CMS. #}
-          <a href="{{ url(relation) }}">{{ relation.name }}</a>{% if not loop.last %},{% endif %}
-        {% endfor %}
-      </li>
-      <li>
-        <strong>Artist (allgoodrecs only): </strong>
-        {# Relations require some special code. More info about relations here: #}
-        {# http://www.webhook.com/docs/template-rules-and-filters/#getitem #}
-        {% for relation in item.artist_allgoodrecs_only %}
-          {# You can ouput more than just the name. Feel free to output more fields from the CMS. #}
-          <a href="{{ url(relation) }}">{{ relation.name }}</a>{% if not loop.last %},{% endif %}
-        {% endfor %}
-      </li>
-      <li>
-        <strong>Artist: </strong>
-        {{ item.artist }}
       </li>
   </ul>
 {% endblock %}
