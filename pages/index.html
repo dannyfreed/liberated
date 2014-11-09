@@ -27,7 +27,9 @@ $('#life').addClass('active');
 
   {% set categories = get('categories') %}
 
-  {% set categories = categories|sort("name") %}
+  {% set categories = categories|exclude('name', 'Other') %}
+
+  {% set categories = categories|sort("order", false) %}
 
 
   {% if data.length %}
@@ -61,9 +63,12 @@ $('#life').addClass('active');
         <option value="nyc">NYC</option>
         <option value="sanfran">San Fransisco</option>-->
 <!--dynamically pull these instead-->
-{% for category in categories|where('categorize_by','Type of content')%}
+<option value="all" selected="selected">Sort By...</option>
+  <option value="All">All</option>
+  {% for category in categories|where('categorize_by','Type of content')%}
     <option value="{{ category.name }}">{{ category.name }}</option>
   {% endfor %}
+  <option value="Other">Other</option>
     <option value="All">--</option>
   {% for category in categories|where('categorize_by','City')%}
     <option value="{{ category.name }}">{{ category.name }}</option>
@@ -93,10 +98,10 @@ $('#life').addClass('active');
           <div style="height:160px; background-image:url('{{ object.image.url }}'); background-size:cover;width:100%; margin-bottom:10px;"></div>
         </a>
           <a href="{{ url(object) }}">
-            <h2 style="font-size:25px; font-family: 'Questrial', sans-serif;">{{ object.name }}</h2>
+            <h2 style="font-size:25px;font-family: 'Neuton', serif !important;">{{ object.name }}</h2>
           </a>
 
-        <p style="" class="lead">
+        <p style="margin-top:4px;" class="lead">
           {{ object.short_version }}
         </p>
     </div>

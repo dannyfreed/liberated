@@ -12,6 +12,7 @@
 {# This sets our page <title>. It will append this artists's name to the site title defined in base.html #}
 {% block title %}{% parent %} - {{ item.name }}{% endblock %}
 {% block content %}
+<title>AllGood | {{ item.name }}</title>
 <script>
 $('#about-us').addClass('active');
 </script>
@@ -20,9 +21,9 @@ $('#about-us').addClass('active');
     <p><a href="{{ url('artists') }}"> << View all artists</a></p>
 
 
-    <div style="padding-left:5%; padding-right:5%; text-align:center;" class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
-      <h1 style="margin-bottom:10px; text-decoration:underline;">{{item.name}}</h1>
-      <img style="margin-top:10px; margin-bottom:20px; margin-left:auto;margin-right:auto" class="img-responsive" src="{{ item.image|imageSize(300) }}" />
+    <div style="padding-top:20px; padding-left:5%; padding-right:5%; text-align:center;" class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+      <h1 style="margin-bottom:10px; text-align:left; text-decoration:underline;">{{item.name}}</h1>
+      <img style="margin-top:10px; margin-bottom:20px; margin-left:0;" class="img-responsive" src="{{ item.image|imageSize(300) }}" />
       <p style="text-align:left;">{{item.description}}</p>
       
       <div class="tickets-button">
@@ -36,16 +37,21 @@ $('#about-us').addClass('active');
         <a class="twitter-timeline" href="https://twitter.com/{{ item.twitter_username }}" data-widget-id="443912644651528192" data-screen-name="{{ item.twitter_username }}">Tweets by @{{ about.twitter_username }}</a>
       </div>
     <div class="artist-instagram">
-      <h3>Instagram Feed:</h3>
+      <div style="height:43px;">
+        <h4><span style="margin-left:10px; margin-top:10px; font-weight:700; float:left;"><i style="margin-right:5px;" class="fa fa-instagram"></i>Photos</span> <a target="_blank" class="insta-follow-button" style="margin-right:10px; float:right;"href="http://instagram.com/{{item.instagram_username}}">Follow</a></h4>
+      </div>
       {% set curUrl = getCurrentUrl() %}
       {% if curUrl|endsWith('/griz/') %}
-      <div id="griz-feed">
+      <div class="artist-feed" id="griz-feed">
       </div>
+      <a href="javascript:void(0);" class="load-more btn btn-secondary" id="load-moreGRIZ">Load More</a>
       {% elseif curUrl|endsWith('/manic-focus/') %}
-      <div id="manic-feed">
+      <div class="artist-feed" id="manic-feed">
+      <a href="javascript:void(0);" class="load-more btn btn-secondary" id="load-moreMANIC">Load More</a>
       </div>
       {% elseif curUrl|endsWith('/the-floozies/') %}
-      <div id="floozies-feed">
+      <div class="artist-feed" id="floozies-feed">
+      <a href="javascript:void(0);" class="load-more btn btn-secondary" id="load-moreFLOOZIES">Load More</a>
       </div>  
       {% endif %}
     </div>
@@ -53,13 +59,17 @@ $('#about-us').addClass('active');
   </div>    
     
 
-    <div style="text-align:center; "class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+    <div style="padding-top:65px; text-align:center; "class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
         {% for relation in item.music_artist_allgoodrecs_only %}
           {# You can ouput more than just the name. Feel free to output more fields from the CMS. #}
           <div style="margin-bottom:40px;">
             <h3 style="text-decoration:underline; margin-bottom:5px;">{{ relation.name }}</h3>{% if not loop.last %}{% endif %}
+            {% if relation.itunes_link %}
             <a style="margin-right:10px;" target="_blank" href="{{relation.itunes_link}}">Get it on iTunes <i class="fa fa-apple"></i></a>
-            <a style="margin-left:10px;" target="_blank" href="{{relation.itunes_link}}">Get it for Free <i class="fa fa-download"></i></a>
+            {% endif %}
+            {% if relation.download_link %}
+            <a style="margin-left:10px;" target="_blank" href="{{relation.download_link}}">Get it for Free <i class="fa fa-download"></i></a>
+            {% endif %}
             <div style="margin-left:auto; margin-right:auto; width:70%;" class="iframe">
               {{relation.soundcloud_url.html|safe}}
             </div>
@@ -71,5 +81,7 @@ $('#about-us').addClass('active');
   </div><!--container-->      
 
   <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+
+
 
 {% endblock %}

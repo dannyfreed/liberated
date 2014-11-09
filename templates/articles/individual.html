@@ -17,7 +17,7 @@ iframe{
   margin-bottom:10px;
 }
 </style>
-  <h1 style="margin-bottom:10px; font-size:3.5em">{{ item.name }}</h1>
+  <h1 style="font-family: 'Neuton', serif !important; margin-bottom:10px; font-size:3.5em">{{ item.name }}</h1>
   {% if item.author %}
   <p style="font-weight:300; color:#7A7A7A;">
     <em>Posted by {{ item.author.first }} {{ item.author.last }} on {{ item.publish_date|date('F d Y') }}</em>
@@ -28,7 +28,7 @@ iframe{
   </p>
   {% endif %}
 
-  {% if item.tags %}<p style="font-weight:300; color:#7A7A7A;"><em>Tags: {{ item.tags }}</em></p>{% endif %}
+  
 
     <div class="article-image" style="background-image:url('{{ item.image.url }}');">
       <img style="visibility:hidden;margin-left:auto; margin-right:auto;" src="{{ item.image.url }}" class="img-responsive"/>
@@ -45,7 +45,7 @@ iframe{
   <div style="font-size:15px;">{{ item.body|safe }}</div>
 
   {# List all images from this gallery. #}
-  <hr/>
+
   {% if item.optional_gallery %}
     <h2>Gallery</h2>
     <div class="row">
@@ -60,7 +60,9 @@ iframe{
   {% endif %}
 
 
+{% if item.tags %}<p style="font-weight:300; color:#7A7A7A;"><em>Tags: {{ item.tags }}</em></p>{% endif %}
 
+  <hr/>
 
 
 

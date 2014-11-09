@@ -1,19 +1,20 @@
+<section class="aside">    
     <section class="social-media">
       <p>Follow Us:</p>
       
-        <div style="text-align:left; padding:0;" class="col-xs-6 col-sm-6 col-md-3 col-lg-3 social-circle facebook">
+        <div class="col-xs-6 col-sm-6 col-md-3 col-lg-3 social-circle facebook">
           <a target="_blank" href="{{ about.facebook_page }}"><i class="fa fa-facebook fa-2x"></i> </a>
         </div>
       
-        <div style="text-align:left; padding:0;" class="col-xs-6 col-sm-6 col-md-3 col-lg-3 social-circle twitter">
+        <div class="col-xs-6 col-sm-6 col-md-3 col-lg-3 social-circle twitter">
           <a target="_blank" href="https://twitter.com/{{ about.twitter_username }}"><i class="fa fa-twitter fa-2x"></i> </a>
         </div>
      
-        <div style="text-align:left; padding:0;" class="col-xs-6 col-sm-6 col-md-3 col-lg-3 social-circle instagram">
+        <div class="col-xs-6 col-sm-6 col-md-3 col-lg-3 social-circle instagram">
           <a target="_blank" href="{{ about.instagram_page }}"><i class="fa fa-instagram fa-2x"></i> </a>
         </div>
       
-        <div style="text-align:left; padding:0;" class="col-xs-6 col-sm-6 col-md-3 col-lg-3 social-circle soundcloud">
+        <div class="col-xs-6 col-sm-6 col-md-3 col-lg-3 social-circle soundcloud">
           <a target="_blank" href="{{ about.soundcloud_page }}"><i class="fa fa-soundcloud fa-2x"></i></a>
         </div>
       
@@ -45,7 +46,7 @@
 
 <!--End mc_embed_signup-->
 
-<a style="border-bottom-right-radius:0px; border-bottom-left-radius:0px; width:100%" class="btn btn-primary" href="{{ about.instagram_page }}"  target="_blank">Photo Stream <i style="line-height:inherit; position:relative; margin-right:8px; float:right;" class="fa fa-instagram"></i></a>
+<a style="border-bottom-right-radius:0px; border-bottom-left-radius:0px; margin-top:5px; width:100%" class="btn btn-primary" href="{{ about.instagram_page }}"  target="_blank">Photo Stream <i style="line-height:inherit; position:relative; margin-right:8px; float:right;" class="fa fa-instagram"></i></a>
 </section>
 
 <div id="instafeed"></div>
@@ -55,8 +56,7 @@
 <a target="_blank" href="{{ about.song_of_the_week.original_url }}">
   <img id="song-of-week" class="img-responsive" src="{{ about.song_of_the_week.thumbnail_url }}" />
 </a>
-<p class="btn btn-secondary" style="background: rgb(213, 213, 213); border:0; color: black; border-top-right-radius: 0; border-top-left-radius: 0; position: relative; top: -14px; text-align: center; cursor: default; width: 100%;
-}r">{{ about.song_of_the_week.title }}</p>
+<p style="margin-bottom: 0;font-weight: 400;text-align: center;vertical-align: middle; white-space: nowrap;padding: 6px 12px;font-size: 14px;line-height: 1.42857143;border-radius: 0;-webkit-user-select: none;-moz-user-select: none;-ms-user-select: none;user-select: none;background: rgba(255, 255, 255, 0.7); border:0; color: black; position: relative; top: -43px; text-align: center; cursor: default; width: 101%;">{{ about.song_of_the_week.title }}</p>
 
 <a style="margin-top:10px; width:100%" class="btn btn-secondary" href="mailto:j.kleiman90@gmail.com" target="_blank">Send Us Music <i style="line-height:inherit; position:relative; margin-right:8px; float:right;" class="fa fa-music"></i></a>
 
@@ -79,13 +79,15 @@
 <div style="margin-bottom:10px; margin-top:10px; text-align:center;border:1px solid black; width:100%; margin-left:auto; margin-right:auto; max-width:160px; height:600px;">160x600 Ad</div>
 
 <section class="our-friends">
-<p>Our Friends...</p>
-<a href="http://www.LowtempMusic.com">owtempMusic.com</a><br />
-<a href="http://www.PrettyLightsMusic.com">PrettyLightsMusic.com</a><br />
-<a href="http://www.BigGigantic.com">BigGigantic.com</a><br />
-<a href="http://www.CuratedMusic.com">CuratedMusic.com</a><br />
-<a href="http://www.Thump.Vice.com">Thump.Vice.com</a><br />
-<a href="http://www.ThisSongIsSick.com">ThisSongIsSick.com</a>
+  <p>Our Friends...</p>
+  <div>
+    <a target="_blank" href="http://www.ThisSongIsSick.com">ThisSongIsSick.com</a><br />
+    <a target="_blank" href="http://www.Thump.Vice.com">Thump.Vice.com</a><br />
+    <a target="_blank" href="http://www.LowtempMusic.com">LowtempMusic.com</a><br />
+    <a target="_blank" href="http://www.PrettyLightsMusic.com">PrettyLightsMusic.com</a><br />
+    <a target="_blank" href="http://www.BigGigantic.com">BigGigantic.com</a><br />
+    <a target="_blank" href="http://www.CuratedMusic.com">CuratedMusic.com</a>
+  </div>
 </section>
 
     <section class="social-media">
@@ -109,6 +111,7 @@
       
     </section>
 
+</section>
 
 
 

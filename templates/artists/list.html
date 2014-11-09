@@ -18,6 +18,7 @@
 {% block title %}{% parent %} - artists{% endblock %}
 
 {% block content %}
+<title>AllGood | About Us</title>
 <script>
 $('#about-us').addClass('active');
 </script>
@@ -67,7 +68,7 @@ $('#about-us').addClass('active');
                 <a target="_blank" href="http://twitter.com/{{ object.twitter_username }}"><i class="fa fa-twitter fa-lg"></i></a>
               </div>
               <div style="text-align:center" class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
-                <a target="_blank" href="{{ object.instagram_page }}"><i class="fa fa-instagram fa-lg"></i></a>
+                <a target="_blank" href="http://instagram.com/{{ object.instagram_username }}"><i class="fa fa-instagram fa-lg"></i></a>
               </div>
               <div style="text-align:center" class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
                 <a target="_blank" href="{{ object.soundcloud_page }}"><i class="fa fa-soundcloud fa-lg"></i></a>

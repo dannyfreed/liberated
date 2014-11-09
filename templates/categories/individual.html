@@ -55,5 +55,9 @@
           <a href="{{ url(relation) }}">{{ relation.name }}</a>{% if not loop.last %},{% endif %}
         {% endfor %}
       </li>
+      <li>
+        <strong>Order: </strong>
+        {{ item.order }}
+      </li>
   </ul>
 {% endblock %}
