@@ -813,7 +813,7 @@ $('.iframe iframe').css('margin-bottom:0');
         },
         target: 'griz-feed',
         get: 'user',
-        limit: '10',
+        limit: '4',
         userId: 16269550,
         accessToken: '16269550.467ede5.f420519e75b746ce863133bbefe2e3ba',
         resolution: 'standard_resolution',
@@ -831,7 +831,7 @@ $('.iframe iframe').css('margin-bottom:0');
         get: 'user',
         userId: 16269550,
         accessToken: '16269550.467ede5.f420519e75b746ce863133bbefe2e3ba',
-        limit: '10',
+        limit: '4',
         resolution: 'standard_resolution',
         template: '<div class="insta-container"> <figure style="margin:0;" id="{{id}}"><a target="_blank" href="{{link}}"><img class="img-responsive insta-pic" src="{{image}}" /></a> <figcaption style="font-size:14px; line-height:18px; text-align:left;"><p>{{caption}}</p><p style="padding-left:1px;"><span class="likes"><a href="{{link}}"><i class="fa fa-heart"></i>{{likes}}</a></span><span class="comments"><a href="{{link}}"><i class="fa fa-comment"></i>{{comments}}</a></span></p></figcaption></figure></div>'
     });
@@ -846,7 +846,7 @@ $('.iframe iframe').css('margin-bottom:0');
         get: 'user',
         userId: 16269550,
         accessToken: '16269550.467ede5.f420519e75b746ce863133bbefe2e3ba',
-        limit: '10',
+        limit: '4',
         resolution: 'standard_resolution',
         template: '<div class="insta-container"> <figure style="margin:0;" id="{{id}}"><a target="_blank" href="{{link}}"><img class="img-responsive insta-pic" src="{{image}}" /></a> <figcaption style="font-size:14px; line-height:18px; text-align:left;"><p>{{caption}}</p><p style="padding-left:1px;"><span class="likes"><a href="{{link}}"><i class="fa fa-heart"></i>{{likes}}</a></span><span class="comments"><a href="{{link}}"><i class="fa fa-comment"></i>{{comments}}</a></span></p></figcaption></figure></div>'
     });
