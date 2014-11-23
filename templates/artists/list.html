@@ -20,7 +20,7 @@
 {% block content %}
 <title>AllGood | About Us</title>
 <script>
-$('#about-us').addClass('active');
+$('#artists').addClass('active');
 </script>
 
   {# The first thing we do is call artists data from the CMS. #}
@@ -33,21 +33,49 @@ $('#about-us').addClass('active');
   {# This is how you set pagination. It's always important to do this after your sort. #}
   {% set data = paginate(data, 5) %}
 <div class="container">
-  <div style="margin-top:25px; margin-bottom:25px; text-align:center;" class="col-xs-12 col-sm-8 col-md-8 col-lg-8 col-sm-offset-2 col-md-offset-2 col-lg-offset-2">
+<!--   <div style="margin-top:25px; margin-bottom:25px; text-align:center;" class="col-xs-12 col-sm-8 col-md-8 col-lg-8 col-sm-offset-2 col-md-offset-2 col-lg-offset-2">
     <h1>What We're About</h1>
     <p>{{about.manifesto}}</p>
     <br />
     <hr>
-  </div>
+  </div> -->
   {# This forloop can use any data from http:localhost:2000/cms/#/form/artists/ #}
-  <ul>
+
     {% for object in data %}
-    <li style="margin-bottom:25px;">
-      <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 row">
+<!--       <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 row">
         <a href="{{ url(object) }}"><h1 style="margin-bottom:5px; display:inline-block; border-bottom:2px solid black;">{{ object.name }}</h1></a>
+      </div> -->
+      <div style="margin-bottom:25px;" class="row">
+      <div class="col-xs-12 col-sm-9 col-md-9 col-lg-9">
+        <a href="{{ url(object) }}"><img class="img-responsive artist-image" src="{{ object.image|imageSize(800) }}" /></a>
+        <p class="artist-quote"> "{{ object.description }}"</p>
       </div>
-      <div class="row">
-        <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+      <div style="text-align:center;" class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
+        <div>
+          <a href="{{url(object)}}"><h1>{{object.name}}</h1></a>
+        </div>
+
+        <div class="music-button">
+          <a style="width:100%" class="btn btn-primary" href="{{ url(object) }}">Listen</a>
+        </div>
+        <div class="social-buttons">
+          <h4 style="margin-bottom:1em;">Follow {{object.name}}:</h4>
+          <div style="text-align:center" class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+            <a target="_blank" href="{{ object.facebook_page }}"><i class="fa fa-facebook fa-lg"></i></a>
+          </div>
+          <div style="text-align:center" class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+            <a target="_blank" href="http://twitter.com/{{ object.twitter_username }}"><i class="fa fa-twitter fa-lg"></i></a>
+          </div>
+          <div style="text-align:center" class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+            <a target="_blank" href="http://instagram.com/{{ object.instagram_username }}"><i class="fa fa-instagram fa-lg"></i></a>
+          </div>
+          <div style="text-align:center" class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+            <a target="_blank" href="{{ object.soundcloud_page }}"><i class="fa fa-soundcloud fa-lg"></i></a>
+          </div>
+        </div>
+      </div>
+
+        <!-- <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
           <a href="{{ url(object) }}"><img src="{{ object.image|imageSize(200) }}" /></a>
         </div>
         <div style="padding-top:30px;" class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
@@ -74,12 +102,11 @@ $('#about-us').addClass('active');
                 <a target="_blank" href="{{ object.soundcloud_page }}"><i class="fa fa-soundcloud fa-lg"></i></a>
               </div>
             </div>
-        </div>
+        </div> -->
       </div><!--row-->
-      <br /><hr>
-    </li>
+      <br />
     {% endfor %}
-  </ul>
+
 
   {# The actual pagination template, feel free to edit or replace the default one. #}
   {% include "templates/partials/paginator.html" %}

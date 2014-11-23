@@ -17,7 +17,7 @@ iframe{
   margin-bottom:10px;
 }
 </style>
-  <h1 style="font-family: 'Neuton', serif !important; margin-bottom:10px; font-size:3.5em">{{ item.name }}</h1>
+  <h1 style="margin-bottom:10px; font-size:3.5em">{{ item.name }}</h1>
   {% if item.author %}
   <p style="font-weight:300; color:#7A7A7A;">
     <em>Posted by {{ item.author.first }} {{ item.author.last }} on {{ item.publish_date|date('F d Y') }}</em>

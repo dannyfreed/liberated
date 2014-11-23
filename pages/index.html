@@ -18,9 +18,12 @@ $('#life').addClass('active');
 
   {% set featured_data = data %}
 
-  {# This is how you set pagination. #}
-  {% set data = paginate(data, 18) %}
 
+  {% set releases = get('music') %}
+
+  {% set releases = releases|where('featured_release', 'Yes') %}
+
+  {% set releases = releases|sort("publish_date", true) %}
 
 
 
@@ -47,22 +50,12 @@ $('#life').addClass('active');
 
 
 <hr>
-<div style="margin-bottom:20px;" class="row">
+<h3 style="text-align:center">Posts</h3>
+<hr>
+<!-- <div style="margin-bottom:20px;" class="row">
   <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
     <div style="top: -2px; position: relative; font-size: 12px;width:150px; display:inline-block" class="select-style">  
       <select id="sort_by" name="sort_by">
-        <!--<option value="all" selected="selected">Sort By...</option>
-        <option value="all">All</option>
-        <option value="music">Music</option>
-        <option value="video">Videos</option>
-        <option value="other">Other Stuff</option>
-
-        <option value="chicago">Chicago</option>
-        <option value="detroit">Detroit</option>
-        <option value="denver">Denver/Boulder</option>
-        <option value="nyc">NYC</option>
-        <option value="sanfran">San Fransisco</option>-->
-<!--dynamically pull these instead-->
 <option value="all" selected="selected">Sort By...</option>
   <option value="All">All</option>
   {% for category in categories|where('categorize_by','Type of content')%}
@@ -77,7 +70,7 @@ $('#life').addClass('active');
     </div>
   </div>
   <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
-    <h3 style="text-align:center"><span style="text-transform:capitalize;" id="article_category">All</span> Articles</h3>
+    <h3 style="text-align:center"><span style="text-transform:capitalize;" id="article_category">All</span> Posts</h3>
   </div>
   <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
 <form>
@@ -88,27 +81,62 @@ $('#life').addClass('active');
 
   <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12"><hr></div>
 
-</div>
+</div> -->
 
 <span id="article-holder">
-<section data-swiftype-index='false' class="articles">
-{% for object in data %}
-      <div data-multicategory="{% for category in object.category%}{{category.name}} {% endfor %}"class="article-block col-xs-12 col-sm-4 col-md-4 col-lg-4">
-        <a class="image-link" href="{{ url(object) }}">
-          <div style="height:160px; background-image:url('{{ object.image.url }}'); background-size:cover;width:100%; margin-bottom:10px;"></div>
-        </a>
-          <a href="{{ url(object) }}">
-            <h2 style="font-size:25px;font-family: 'Neuton', serif !important;">{{ object.name }}</h2>
+  <section data-swiftype-index='false' class="articles">
+  {% for object in data|slice(0,6) %}
+        <div data-multicategory="{% for category in object.category%}{{category.name}} {% endfor %}"class="article-block col-xs-12 col-sm-6 col-md-4 col-lg-4">
+          <a class="image-link" href="{{ url(object) }}">
+            <div class="home-pic" style="background-image:url('{{ object.image.url }}'); background-size:cover;width:100%; margin-bottom:10px;"></div>
           </a>
+            <a href="{{ url(object) }}">
+              <h2 style="font-size:25px;font-family: 'Neuton', serif !important;">{{ object.name }}</h2>
+            </a>
 
-        <p style="margin-top:4px;" class="lead">
-          {{ object.short_version }}
-        </p>
+          <p style="margin-top:4px;" class="lead">
+            {{ object.short_version }}
+          </p>
+      </div>
+  {% endfor %}
+  </section>
+</span>
+
+
+  <section data-swiftype-index='false' class="releases">
+    <hr>
+      <h3 style="margin-bottom:20px; text-align:center;">Releases</h3>
+    <hr>
+
+    {% for release in releases|slice(0,6) %}
+    <div data-artist="{{release.soundcloud_url.author_name|replace(' ', '-', 'g')}}" class="release-block col-xs-12 col-sm-6 col-md-6 col-lg-4">      
+      <div class="holder" style="background-image:url(' {{release.soundcloud_url.thumbnail_url}} ');">
+        <a data-toggle="modal" data-target=".{{release.name|replace('\W', '-', 'g')}}" class="play-button {{release.name|replace(' ', '-', 'g')}}-button" href=""><div class="play-background"></div><i class="fa fa-play-circle fa-5x"></i></a>
+      </div>
+      {% if release.artist_allgoodrecs_only %}
+        <div>
+          <h2 style="font-size:25px;font-family: 'Neuton', serif !important;">
+            <a href="{{ url(release.artist_allgoodrecs_only) }}">{{ release.artist_allgoodrecs_only.name }}</a>
+          </h2>
+          <h5>{{release.name}}</h5>
+        </div>
+      {% else %}
+        <div ><h5>{{ release.soundcloud_url.author_name }} - {{ release.name }}</h5></div>
+      {% endif %}      
     </div>
-{% endfor %}
+
+
+    <!--dynamic modal-->
+    <div class="{{release.name|replace('\W', '-', 'g')}} modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          {{release.soundcloud_url.html|safe}}
+        </div>
+      </div>
+    </div>
+    {% endfor %}
 
   </section>
-  </span>
 <div class="pagination">
     {# The actual pagination template, feel free to edit or replace the default one. #}
     {% include "templates/partials/paginator.html" %}

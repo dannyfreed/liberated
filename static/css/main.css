@@ -90,6 +90,9 @@ p,h1,h2,h3,h4,h5,h6{
 	margin:0;
 	padding:0;
 }
+.btn{
+  transition: all 0.3s ease 0s;
+}
 .btn-primary{
 	background:#e42c40;
 	border-color:#DB1A2F;
@@ -146,17 +149,33 @@ section{
 	overflow: hidden;
 }
 header{
-	margin-bottom:16px;
+	margin-bottom:46px;
 }
 
 
 /*END HEADER*/
 
+/*home page*/
+.home-pic{
+  height:160px;
+}
+.releases{
+  text-align:center;
+  margin-top:25px;
+}
+.release-block{
+  margin-bottom:40px;
+  min-height:300px;
+}
+.release-block > .holder{
+  margin-bottom:2px; width:100%; height:250px; background-position:center; background-size:cover; 
+
+}
 .lead{
 	font-size:14px;
 }
 .article-block{
-  min-height:370px;
+  min-height:320px;
   /*border-bottom:1px solid #eee;*/
   margin-bottom:25px;
 }
@@ -803,11 +822,70 @@ a.download:hover, a.support:hover, a.info:hover{
 }
 /*END ASIDE*/
 
-
-/*Artists Page*/
-.social-buttons{
-  margin-top:2em;
+/*Artists list page*/
+.artist-quote{
+  font-style: italic;
+  font-size: 1.5em;
 }
+.social-buttons{
+  margin-top:100px;
+}
+.music-button a{
+  margin-top:100px;
+  font-size:2em;
+}
+.artist-image{
+  filter: url("data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\'><filter id=\'grayscale\'><feColorMatrix type=\'matrix\' values=\'0.3333 0.3333 0.3333 0 0 0.3333 0.3333 0.3333 0 0 0.3333 0.3333 0.3333 0 0 0 0 0 1 0\'/></filter></svg>#grayscale"); /* Firefox 10+, Firefox on Android */
+  filter: gray; /* IE6-9 */
+  -webkit-filter: grayscale(100%); /* Chrome 19+, Safari 6+, Safari 6+ iOS */
+}
+@media (min-width:0px) and (max-width: 768px){
+  .social-buttons, .music-button a{
+    margin-top:30px;
+  }
+  .aside{
+    display:none !important;
+  }
+  .home-pic{
+    height:350px;
+  }
+}
+/*END artists list page */
+
+/*BLOG*/
+.blog-image{
+  height:500px;
+  background-repeat:no-repeat;
+  background-position:center;
+  background-size:cover;
+  position:relative;
+  cursor: pointer;
+  overflow:hidden;
+}
+.blog-image > a{
+  position:relative;
+}
+.title{
+  position:absolute;
+  bottom:-30px;
+  background:rgba(0,0,0,0.4);
+  width:100%;
+  color:white;
+  padding:1.5em;
+  padding-top:1em;
+  text-transform: uppercase;
+  transition: all 0.3s ease 0s;
+}
+.title > a{
+  position:relative;
+  top:8px;
+  color:white;
+  text-transform: uppercase;
+}
+/*END BLOG*/
+
+/*Artists Individual Page*/
+
 .twitter-feed{
   margin-top:20px;
   padding-left:5%;
@@ -1124,3 +1202,6 @@ z-index: auto;
 zoom: 1;
 -webkit-box-shadow: rgba(0, 0, 0, 0.0980392) 0px 1px 1px 0px, rgba(255, 255, 255, 0.0470588) 1px 0px 0px 0px inset, rgba(255, 255, 255, 0.0470588) -1px 0px 0px 0px inset, rgba(255, 255, 255, 0.2) 0px 1px 0px 0px inset;
 }
+
+
+

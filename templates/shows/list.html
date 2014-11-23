@@ -68,8 +68,7 @@ $('#tickets').addClass('active');
             </address></span>
             </td>
             <td style="width:400px; font-size:15px; font-weight:500;">{{ object.name }}</td>
-            <td style="width:100px;"><a class="btn btn-primary btn-lg" target="_blank" href="{{ object.tickets_link }}">TIX</a></td>
-            <td style="width:100px;"><a class="btn btn-info btn-lg" target="_blank" href="{{ relation.artist_website }}"><i style="margin-right:5px;" class="fa fa-volume-up"></i>More Info</a></td>
+            <td style="width:150px;"><a class="btn btn-primary btn-lg" style="text-transform:uppercase;" target="_blank" href="{{ object.tickets_link }}">tickets</a></td>
           </tr>
             <!--<li class="show"data-artist="{{relation.name}}"><a href="{{ url(object) }}">{{ object.name }}</a></li>
          <a href="{{ url(relation) }}">{{ relation.name }}</a>{% if not loop.last %},{% endif %}-->

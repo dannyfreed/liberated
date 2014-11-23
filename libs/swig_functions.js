@@ -33,9 +33,9 @@ module.exports.swigFunctions = function(swig) {
    */
   var url = function(object) {
     if(typeof object === 'string') {
-      var types = getTypes();
+      var types = getTypes(true);
 
-      object = _.find(types, function(type){ return type.name.toLowerCase() == object.toLowerCase() });
+      object = _.find(types, function(type){ return type.name.toLowerCase() == object.toLowerCase() || type.id.toLowerCase() == object.toLowerCase() });
     }
   
     if(!object) {
@@ -97,10 +97,12 @@ module.exports.swigFunctions = function(swig) {
         var slug = key;
 
         if(self.typeInfo[key] && self.typeInfo[key].customUrls && self.typeInfo[key].customUrls.listUrl) {
-          slug = self.typeInfo[key].customUrls.listUrl;
+          if(!(self.typeInfo[key].customUrls.listUrl === '#')) {
+            slug = self.typeInfo[key].customUrls.listUrl;
+          }
         }
 
-        types.push({ slug: slug, name: self.typeInfo[key].name });
+        types.push({ slug: slug, name: self.typeInfo[key].name, id: key });
       }
     }
 
@@ -307,7 +309,9 @@ module.exports.swigFunctions = function(swig) {
             var prefix = '';
 
             if(self.typeInfo[name] && self.typeInfo[name].customUrls && self.typeInfo[name].customUrls.listUrl) {
-              prefix = self.typeInfo[name].customUrls.listUrl + '/';
+              if(!(self.typeInfo[name].customUrls.listUrl === '#')) {
+                prefix = self.typeInfo[name].customUrls.listUrl + '/';
+              }
             } else {
               prefix = name + '/';
             }

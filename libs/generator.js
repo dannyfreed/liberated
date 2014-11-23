@@ -352,6 +352,18 @@ module.exports.generator = function (config, options, logger, fileParser) {
 
       var entries = zip.getEntries();
 
+      if(fs.existsSync('.pages-old')) {
+        wrench.rmdirSyncRecursive('.pages-old');
+      }
+
+      if(fs.existsSync('.templates-old')) {
+        wrench.rmdirSyncRecursive('.templates-old');
+      }
+
+      if(fs.existsSync('.static-old')) {
+        wrench.rmdirSyncRecursive('.static-old');
+      }
+
       try {
         fs.renameSync('pages', '.pages-old');
       } catch(error) {
@@ -464,13 +476,19 @@ module.exports.generator = function (config, options, logger, fileParser) {
 
     getData(function(data) {
 
-      glob('pages/**/*.{html,xml,rss,xhtml,atom}', function(err, files) {
+      glob('pages/**/*', function(err, files) {
         files.forEach(function(file) {
+
+          if(fs.lstatSync(file).isDirectory()) {
+            return true;
+          }
 
           var newFile = file.replace('pages', './.build');
 
           var dir = path.dirname(newFile);
           var filename = path.basename(newFile, path.extname(file));
+          var extension = path.extname(file);
+
 
           if(path.extname(file) === '.html' && filename !== 'index' && path.basename(newFile) !== '404.html') {
             dir = dir + '/' + filename;
@@ -479,13 +497,13 @@ module.exports.generator = function (config, options, logger, fileParser) {
 
           newFile = dir + '/' + filename + path.extname(file);
 
-          var destFile = writeTemplate(file, newFile);
+          if(extension === '.html' || extension === '.xml' || extension === '.rss' || extension === '.xhtml' || extension === '.atom' || extension === '.txt') { 
+            writeTemplate(file, newFile);
+          } else {
+            mkdirp.sync(path.dirname(newFile));
+            fs.writeFileSync(newFile, fs.readFileSync(file));
+          }
         });
-
-        if(fs.existsSync('pages/robots.txt'))
-        {
-          fs.writeFileSync('./.build/robots.txt', fs.readFileSync('pages/robots.txt'));
-        }
 
         if(fs.existsSync('./libs/.supported.js')) {
           mkdirp.sync('./.build/.wh/_supported');
@@ -588,10 +606,18 @@ module.exports.generator = function (config, options, logger, fileParser) {
               });
             }
 
+            var listPath = null;
+
             if(typeInfo[objectName] && typeInfo[objectName].customUrls && typeInfo[objectName].customUrls.listUrl) {
               var customPathParts = newPath.split('/');
 
-              customPathParts[2] = typeInfo[objectName].customUrls.listUrl;
+              if(typeInfo[objectName].customUrls.listUrl === '#') // Special remove syntax
+              {
+                listPath = customPathParts.join('/');
+                customPathParts.splice(2, 1);
+              } else {
+                customPathParts[2] = typeInfo[objectName].customUrls.listUrl;
+              }
 
               newPath = customPathParts.join('/');
             }
@@ -602,6 +628,11 @@ module.exports.generator = function (config, options, logger, fileParser) {
             if(baseName === 'list')
             {
               newPath = newPath + '/index.html';
+
+              if(listPath) {
+                newPath = listPath + '/index.html';
+              }
+
               writeTemplate(file, newPath);
 
             } else if (baseName === 'individual') {
@@ -931,6 +962,50 @@ module.exports.generator = function (config, options, logger, fileParser) {
     }
   };
 
+  var runCommand = function(cmd, cwd, args, pipe, cb) {
+    if(typeof pipe == 'function') {
+      cb = pipe;
+      pipe = false;
+    }
+
+    var command = spawn(cmd, args, {
+      stdio: [process.stdin, pipe ? 'pipe' : process.stdout, process.stderr],
+      cwd: cwd
+    });
+
+    var output = '';
+
+    if(pipe) {
+      command.stdout.on('data', function(data) {
+        output += data;
+      });
+    }
+
+    command.on('close', function() {
+      cb(output);
+    })
+  }
+
+  var runNpm = function(cb) {
+    if(options.npmCache) {
+      runCommand(options.npm || 'npm', '.', ['config', 'get', 'cache'], true, function(diroutput) {
+        var oldCacheDir = diroutput.trim();
+        runCommand(options.npm || 'npm', '.', ['config', 'set', 'cache', options.npmCache], function() {
+          runCommand(options.npm || 'npm', '.', ['install'], function() {
+            runCommand(options.npm || 'npm', '.', ['config', 'set', 'cache', oldCacheDir], function() {
+              cb();
+            });
+          });
+        });
+      });
+    } else {
+      runCommand(options.npm || 'npm', '.', ['install'], function() {
+        console.log('NPM done');
+        cb();
+      }); 
+    }
+  };
+
   /**
    * Starts a websocket listener on 0.0.0.0 (for people who want to run wh serv over a network)
    * Accepts messages for generating scaffolding and downloading preset themes.
@@ -993,7 +1068,12 @@ module.exports.generator = function (config, options, logger, fileParser) {
             } 
 
             if(typeInfo && typeInfo.customUrls && typeInfo.customUrls.listUrl) {
-              tmpSlug = typeInfo.customUrls.listUrl + '/' + tmpSlug;
+
+              if(typeInfo.customUrls.listUrl === '#') {
+                tmpSlug = tmpSlug;
+              } else {
+                tmpSlug = typeInfo.customUrls.listUrl + '/' + tmpSlug;
+              }
             } else {
               tmpSlug = type + '/' + tmpSlug;
             }
@@ -1011,13 +1091,7 @@ module.exports.generator = function (config, options, logger, fileParser) {
           }
 
           extractPresetLocal(fileData, function(data) {
-            var args = ['install'];
-            var command = spawn(options.npm || 'npm', args, {
-              stdio: 'inherit',
-              cwd: '.'
-            });
-
-            command.on('close', function() {
+            runNpm(function() {
               sock.send('done:' + JSON.stringify(data));
             });
           });
@@ -1028,12 +1102,8 @@ module.exports.generator = function (config, options, logger, fileParser) {
             return;
           }
           downloadPreset(url, function(data) {
-            var command = spawn(options.npm || 'npm', ['install'], {
-              stdio: 'inherit',
-              cwd: '.'
-            });
-
-            command.on('close', function() {
+            runNpm(function() {
+              console.log('DONE RUNNING?')
               sock.send('done:' + JSON.stringify(data));
             });
           });
