@@ -52,7 +52,7 @@ $('#blog').addClass('active');
   <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
     <div style="top: -2px; position: relative; font-size: 12px;width:150px; display:inline-block" class="select-style">  
       <select id="sort_by" name="sort_by">
-        <option value="all" selected="selected">Sort By...</option>
+        <option value="All" selected="selected">Sort By...</option>
         <option value="All">All</option>
         {% for category in categories|where('categorize_by','Type of content')%}
           <option value="{{ category.name }}">{{ category.name }}</option>
