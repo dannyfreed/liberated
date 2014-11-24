@@ -4,6 +4,13 @@
   }
 }
 /*Reset bootstrap stuff*/
+.navbar-toggle{
+  background:white;
+
+}
+.navbar-toggle .icon-bar{
+  background:#e42c40;
+}
 hr{
   border-top: 1px solid #D0D0D0 !important;
 }
@@ -84,7 +91,9 @@ header .navbar{
 	position: relative;
 	top: 34px;
 	margin: 0;
-	background: #15151e;
+	background-color: #15151e;
+  border-radius:0;
+  z-index:1000;
 }
 p,h1,h2,h3,h4,h5,h6{
 	margin:0;
@@ -156,6 +165,12 @@ header{
 /*END HEADER*/
 
 /*home page*/
+
+/*swifttype*/
+.autocomplete .title{
+  display:none !important;
+}
+/*end swiftype*/
 .home-pic{
   height:160px;
 }
@@ -848,6 +863,9 @@ a.download:hover, a.support:hover, a.info:hover{
   }
   .home-pic{
     height:350px;
+  }
+  .col-xs-0{
+    display: none !important;
   }
 }
 /*END artists list page */
