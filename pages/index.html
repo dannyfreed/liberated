@@ -35,6 +35,10 @@ $('#life').addClass('active');
   {% set categories = categories|sort("order", false) %}
 
 
+  {% set shows = cms.shows %}
+  
+  {% set shows = shows|sort('date_time', false) %}
+
   {% if data.length %}
 
     {# Output articles sorted by most recent publish date #}
@@ -138,6 +142,58 @@ $('#life').addClass('active');
     {% endfor %}
 
   </section>
+
+<!--tickets-->
+
+<section data-swiftype-index='false' class="tickets">
+  <hr>
+    <h3 style="margin-bottom:20px; text-align:center;">Tickets</h3>
+  <div class="table-responsive">
+    <table class="table show-table">
+    {{foo}}
+    {% for show in shows %}
+      {% for relation in show.artist %}
+          <tr data-date="{{ show.date_time|date('M j Y')}}"class="show-item">
+            <td style="width:100px;"><img src="{{ relation.image|imageCrop(80) }}" /></td>
+            <td style="width:100px;"><span style="font-size:1.1em; font-weight:500; text-transform:uppercase">{{ show.date_time|date('M' )}}</span> <br /> <span style="font-size:1.8em; font-weight:700;">{{ show.date_time|date('d' )}}</span> <br /> <span style="font-size:1.1em; font-weight:500;">{{ show.date_time|date('Y' )}}</span></td>
+            <td style="padding-top:20px; font-size:1.8em; font-weight:700" class="show" data-artist="{{relation.name}}">{{ relation.name }}
+            <span style="font-size:15px; font-weight:500;"><br />
+            <address>
+              {%if show.location.city %}
+                {{ show.location.city }}, {{ show.location.state }}
+                {%else %}
+                {{ show.location.street1 }}
+              {% endif %}
+            </address></span>
+            </td>
+            <td style="width:400px; font-size:15px; font-weight:500;">{{ show.name }}</td>
+            <td style="width:150px;"><a class="btn btn-primary btn-lg" style="text-transform:uppercase;" target="_blank" href="{{ show.tickets_link }}">tickets</a></td>
+          </tr>
+
+            
+      {% endfor %}
+
+    {% endfor %}
+    </table>
+  </div>
+</section>
+
+<script>
+
+// $rows.hide().slice(min, max).show();
+// $('.active-show').hide().slice(5).show()
+// alert('sliced');
+
+
+//for each active show
+////if counter is <6
+///////display the show
+///////increment the counter
+
+</script>
+
+
+
 <div class="pagination">
     {# The actual pagination template, feel free to edit or replace the default one. #}
     {% include "templates/partials/paginator.html" %}
@@ -180,114 +236,7 @@ $("#sort_by").change(function(){
 });
 </script>
 
-<!--<script>
-$("#sort_by").change(function(){
-  var display_articles = $(this).val();
-  $('#article_category').text(display_articles);
-  if (display_articles === "music"){
-    $('.articles').removeClass('video-articles');
-    $('.articles').removeClass('other-articles');
-    $('.articles').removeClass('chicago-articles');
-    $('.articles').removeClass('detroit-articles');
-    $('.articles').removeClass('denver-articles');
-    $('.articles').removeClass('nyc-articles');
-    $('.articles').removeClass('sanfran-articles');
 
-    $('.articles').addClass('music-articles');
-  }
-  else if (display_articles === "video"){
-    $('.articles').removeClass('music-articles');
-    $('.articles').removeClass('other-articles');
-    $('.articles').removeClass('chicago-articles');
-    $('.articles').removeClass('detroit-articles');
-    $('.articles').removeClass('denver-articles');
-    $('.articles').removeClass('nyc-articles');
-    $('.articles').removeClass('sanfran-articles');
-
-    $('.articles').addClass('video-articles');
-  }
-  else if (display_articles === "other"){
-    $('.articles').removeClass('video-articles');
-    $('.articles').removeClass('music-articles');
-    $('.articles').removeClass('chicago-articles');
-    $('.articles').removeClass('detroit-articles');
-    $('.articles').removeClass('denver-articles');
-    $('.articles').removeClass('nyc-articles');
-    $('.articles').removeClass('sanfran-articles');
-
-    $('.articles').addClass('other-articles');
-  }
-  else if (display_articles === "chicago"){
-    $('.articles').removeClass('video-articles');
-    $('.articles').removeClass('music-articles');
-    $('.articles').removeClass('detroit-articles');
-    $('.articles').removeClass('other-articles');
-    $('.articles').removeClass('denver-articles');
-    $('.articles').removeClass('nyc-articles');
-    $('.articles').removeClass('sanfran-articles');
-
-    $('.articles').addClass('chicago-articles');
-  }
-  else if (display_articles === "detroit"){
-    $('.articles').removeClass('video-articles');
-    $('.articles').removeClass('music-articles');
-    $('.articles').removeClass('chicago-articles');
-    $('.articles').removeClass('other-articles');
-    $('.articles').removeClass('denver-articles');
-    $('.articles').removeClass('nyc-articles');
-    $('.articles').removeClass('sanfran-articles');
-
-    $('.articles').addClass('detroit-articles');
-  }
-  else if (display_articles === "denver"){
-    $('.articles').removeClass('video-articles');
-    $('.articles').removeClass('music-articles');
-    $('.articles').removeClass('chicago-articles');
-    $('.articles').removeClass('other-articles');
-    $('.articles').removeClass('detroit-articles');
-    $('.articles').removeClass('nyc-articles');
-    $('.articles').removeClass('sanfran-articles');
-
-    $('.articles').addClass('denver-articles');
-  }
-  else if (display_articles === "nyc"){
-    $('.articles').removeClass('video-articles');
-    $('.articles').removeClass('music-articles');
-    $('.articles').removeClass('chicago-articles');
-    $('.articles').removeClass('other-articles');
-    $('.articles').removeClass('detroit-articles');
-    $('.articles').removeClass('denver-articles');
-    $('.articles').removeClass('sanfran-articles');
-
-    $('.articles').addClass('nyc-articles');
-  }
-  else if (display_articles === "sanfran"){
-    $('.articles').removeClass('video-articles');
-    $('.articles').removeClass('music-articles');
-    $('.articles').removeClass('chicago-articles');
-    $('.articles').removeClass('other-articles');
-    $('.articles').removeClass('detroit-articles');
-    $('.articles').removeClass('denver-articles');
-    $('.articles').removeClass('nyc-articles');
-
-    $('.articles').addClass('sanfran-articles');
-  }
-
-  else if (display_articles === "all"){
-    $('.articles').removeClass('video-articles');
-    $('.articles').removeClass('music-articles');
-    $('.articles').removeClass('chicago-articles');
-    $('.articles').removeClass('other-articles');
-    $('.articles').removeClass('detroit-articles');
-    $('.articles').removeClass('denver-articles');
-    $('.articles').removeClass('nyc-articles');
-    $('.articles').removeClass('sanfran-articles');
-
-    //$('.articles').addClass('all-articles');
-  }
-
-});
-</script>-->
 
   <script>
     //add category data from webhook as a class

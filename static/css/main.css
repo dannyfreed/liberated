@@ -31,7 +31,17 @@ hr{
 .pagination>li>a:hover, .pagination>li>span:hover{
   color:#CB1A2D;
 }
-
+@media (min-width:0px) and (max-width: 1200px){
+  .banner-ad{
+    display:none;
+  }
+  .search input{
+    float:none !important;
+  }
+  .logo img{
+    float:none !important;
+  }
+}
 
 address{
   margin-bottom:0 !important;
@@ -54,7 +64,7 @@ ul{
 
 header {
   background-color: rgb(7, 6, 18);
-  height: 187px;
+/*  height: 187px;*/
   text-align: center;
 }
 
@@ -264,6 +274,9 @@ a:hover{
  *
  * Released under the GNU GPLv3 license - http://opensource.org/licenses/gpl-3.0
  */
+ .pgwSlider>.ps-list>li span, ul.pgwSlider>li span{
+  display:none !important;
+ }
 .pgwSlider {
     width: 100%;
     color: #fff;
@@ -838,15 +851,18 @@ a.download:hover, a.support:hover, a.info:hover{
 /*END ASIDE*/
 
 /*Artists list page*/
+.artist-info-holder{
+  text-align:center;
+}
 .artist-quote{
   font-style: italic;
   font-size: 1.5em;
 }
 .social-buttons{
-  margin-top:100px;
+  margin-top:25px;
 }
 .music-button a{
-  margin-top:100px;
+  margin-top:25px;
   font-size:2em;
 }
 .artist-image{

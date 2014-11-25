@@ -45,12 +45,12 @@ $('#artists').addClass('active');
 <!--       <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 row">
         <a href="{{ url(object) }}"><h1 style="margin-bottom:5px; display:inline-block; border-bottom:2px solid black;">{{ object.name }}</h1></a>
       </div> -->
-      <div style="margin-bottom:25px;" class="row">
+    <div style="margin-bottom:20px;" class="row">
       <div class="col-xs-12 col-sm-9 col-md-9 col-lg-9">
         <a href="{{ url(object) }}"><img class="img-responsive artist-image" src="{{ object.image|imageSize(800) }}" /></a>
         <p class="artist-quote"> "{{ object.description }}"</p>
       </div>
-      <div style="text-align:center;" class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
+      <div class="artist-info-holder col-xs-12 col-sm-3 col-md-3 col-lg-3">
         <div>
           <a href="{{url(object)}}"><h1>{{object.name}}</h1></a>
         </div>
@@ -74,37 +74,11 @@ $('#artists').addClass('active');
           </div>
         </div>
       </div>
+      <div class="col-xs-12 col-sm-9 col-md-9 col-lg-9">
+        <hr>
+      </div>
+    </div><!--row-->
 
-        <!-- <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
-          <a href="{{ url(object) }}"><img src="{{ object.image|imageSize(200) }}" /></a>
-        </div>
-        <div style="padding-top:30px;" class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
-          <p>
-          {{ object.description }}
-          </p>
-        </div>
-        <div style="padding-top:25px;"class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
-            <div class="music-button">
-              <a style="width:100%" class="btn btn-primary" href="{{ url(object) }}">Music</a>
-            </div>
-
-            <div class="social-buttons">
-              <div style="text-align:center" class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
-                <a target="_blank" href="{{ object.facebook_page }}"><i class="fa fa-facebook fa-lg"></i></a>
-              </div>
-              <div style="text-align:center" class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
-                <a target="_blank" href="http://twitter.com/{{ object.twitter_username }}"><i class="fa fa-twitter fa-lg"></i></a>
-              </div>
-              <div style="text-align:center" class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
-                <a target="_blank" href="http://instagram.com/{{ object.instagram_username }}"><i class="fa fa-instagram fa-lg"></i></a>
-              </div>
-              <div style="text-align:center" class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
-                <a target="_blank" href="{{ object.soundcloud_page }}"><i class="fa fa-soundcloud fa-lg"></i></a>
-              </div>
-            </div>
-        </div> -->
-      </div><!--row-->
-      <br />
     {% endfor %}
 
 

@@ -53,7 +53,7 @@ $('#tickets').addClass('active');
 
     {% for object in data %}
       {% for relation in object.artist %}
-          <tr class="show-item">
+          <tr data-date="{{ object.date_time|date('M j Y')}}"class="show-item">
             <td style="width:100px;"><img src="{{ relation.image|imageCrop(80) }}" /></td>
             <td style="width:100px;"><span style="font-size:1.1em; font-weight:500; text-transform:uppercase">{{ object.date_time|date('M' )}}</span> <br /> <span style="font-size:1.8em; font-weight:700;">{{ object.date_time|date('d' )}}</span> <br /> <span style="font-size:1.1em; font-weight:500;">{{ object.date_time|date('Y' )}}</span></td>
             <td style="padding-top:20px; font-size:1.8em; font-weight:700" class="show" data-artist="{{relation.name}}">{{ relation.name }}
