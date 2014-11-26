@@ -5,6 +5,18 @@
 {% extends "templates/articles/list.html" %}
 
 {% block content %}
+
+<!--for facebook sharing-->
+    <div id="fb-root"></div>
+    <script>(function(d, s, id) {
+      var js, fjs = d.getElementsByTagName(s)[0];
+      if (d.getElementById(id)) return;
+      js = d.createElement(s); js.id = id;
+      js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&appId=523750074415191&version=v2.0";
+      fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));</script>
+
+
 <script>
 $('#blog').addClass('active');
 </script>
@@ -18,16 +30,19 @@ iframe{
 }
 </style>
   <h1 style="margin-bottom:10px; font-size:3.5em">{{ item.name }}</h1>
-  {% if item.author %}
-  <p style="font-weight:300; color:#7A7A7A;">
-    <em>Posted by {{ item.author.first }} {{ item.author.last }} on {{ item.publish_date|date('F d Y') }}</em>
-  </p>
-  {% else %}
-  <p style="font-weight:300; color:#7A7A7A;">
-  <em>Posted on {{ item.publish_date|date('F d Y') }}</em>
-  </p>
-  {% endif %}
-
+  <div id="post-info">  
+    {% if item.author %}
+    <p style="line-height:45px; display:inline-block; float:left; font-weight:300; color:#7A7A7A;">
+      <em>Posted by {{ item.author.first }} {{ item.author.last }} on {{ item.publish_date|date('F d Y') }}</em>
+    </p>
+    {% else %}
+    <p style="line-height:45px; display:inline-block; float:left; font-weight:300; color:#7A7A7A;">
+    <em>Posted on {{ item.publish_date|date('F d Y') }}</em>
+    </p>
+    {% endif %}
+    <div style="display:inline-block; float:right;" class="fb-share-button" data-href="{{ url(item) }}" data-layout="button_count"></div>
+    <a style="display:inlin-block; float:right; float:right;" data-count="horizontal" data-via="{{ about.twitter_username }}" data-text="{{ item.name }}"class="twitter-share-button" href="https://twitter.com/share">Tweet</a>
+  </div>
   
 
     <div class="article-image" style="background-image:url('{{ item.image.url }}');">
@@ -104,5 +119,7 @@ iframe{
   </script>
 
 
-
+<script type="text/javascript">
+window.twttr=(function(d,s,id){var t,js,fjs=d.getElementsByTagName(s)[0];if(d.getElementById(id)){return}js=d.createElement(s);js.id=id;js.src="https://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);return window.twttr||(t={_e:[],ready:function(f){t._e.push(f)}})}(document,"script","twitter-wjs"));
+</script>
 {% endblock %}

@@ -190,7 +190,7 @@ header{
 }
 .release-block{
   margin-bottom:40px;
-  min-height:300px;
+  min-height:340px;
 }
 .release-block > .holder{
   margin-bottom:2px; width:100%; height:250px; background-position:center; background-size:cover; 
@@ -236,7 +236,14 @@ a:hover{
 #st-launcher-tab{
   display: none;
 }
-
+#post-info{
+  zoom:1;
+  overflow:hidden;
+}
+.twitter-share-button{
+  display:inline-block;
+  float:right;
+}
 /*THIS CONTROLS THE FILTER FUNCTIONALITY*/
 .music-articles .article-block:not(.Music){
   display:none;
@@ -851,8 +858,12 @@ a.download:hover, a.support:hover, a.info:hover{
 /*END ASIDE*/
 
 /*Artists list page*/
+
 .artist-info-holder{
   text-align:center;
+  height:100%;
+  position:relative;
+  padding-top:150px;
 }
 .artist-quote{
   font-style: italic;
@@ -883,6 +894,20 @@ a.download:hover, a.support:hover, a.info:hover{
   .col-xs-0{
     display: none !important;
   }
+  .artist-info-holder{
+    padding-top:25px !important;
+    padding-bottom:25px !important;
+  }
+}
+@media (min-width:768px) and (max-width: 992px){
+  .artist-info-holder{
+    padding-top:83.25px !important;
+  }
+}
+@media (min-width:992px) and (max-width: 1200px){
+  .artist-info-holder{
+    padding-top:124.5px !important;
+  }
 }
 /*END artists list page */
 
@@ -901,22 +926,27 @@ a.download:hover, a.support:hover, a.info:hover{
 }
 .title{
   position:absolute;
-  bottom:-30px;
+  bottom:0;
   background:rgba(0,0,0,0.4);
   width:100%;
   color:white;
-  padding:1.5em;
-  padding-top:1em;
+  padding:1em;
   text-transform: uppercase;
   transition: all 0.3s ease 0s;
 }
 .title > a{
   position:relative;
-  top:8px;
+/*  top:8px;*/
   color:white;
   text-transform: uppercase;
 }
+.title > a:hover{
+  opacity:0.85;
+  text-decoration: underline;
+}
 /*END BLOG*/
+
+
 
 /*Artists Individual Page*/
 

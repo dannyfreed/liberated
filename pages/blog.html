@@ -20,15 +20,7 @@
 <script>
 $('#blog').addClass('active');
 </script>
-<!--for facebook sharing-->
-    <div id="fb-root"></div>
-    <script>(function(d, s, id) {
-      var js, fjs = d.getElementsByTagName(s)[0];
-      if (d.getElementById(id)) return;
-      js = d.createElement(s); js.id = id;
-      js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&appId=523750074415191&version=v2.0";
-      fjs.parentNode.insertBefore(js, fjs);
-    }(document, 'script', 'facebook-jssdk'));</script>
+
 
   {# The first thing we do is call articles data from the CMS. #}
   {% set data = cms.articles %}
@@ -82,11 +74,11 @@ $('#blog').addClass('active');
     {% for object in data %}
       <div data-multicategory="{% for category in object.category%}{{category.name}} {% endfor %}" style="margin-bottom:50px;" class="blog-block col-xs-12 col-sm-12 col-md-12 col-lg-12">
         <p style="">{{ object.publish_date|date('M d Y') }}</p>
-        <div class="fb-share-button" data-href="{{ url(object) }}" data-layout="button_count"></div>       
+        <h1 style="margin-bottom:10px;">{{object.name}}</h1>     
           <div data-href="{{ url(object) }}" class="clickable blog-image" style="background-image:url('{{object.image.url}}')">
             <div class="title">
-              <h1>{{object.name}}</h1>
-              <a href="{{ url(object) }}">View Post</a>
+              <!-- <h1>{{object.name}}</h1> -->
+              <a class="view-post" href="{{ url(object) }}">View Post &rarr;</a>
             </div>
           </div>       
       </div>
@@ -102,10 +94,20 @@ $('.clickable').click(function(){
   window.location = $(this).data("href");
   return false;
 });
-$('.blog-image').hover(function(){
-    $( this ).find('.title').css("bottom","0px");
+
+$('.clickable').hover(function(){
+    $('.view-post').css("text-decoration","underline");
+    $('.view-post').css("opacity", "0.85");
   }, function() {
-    $( this ).find('.title').css("bottom","-30px");
+    $('.view-post').css("text-decoration","none");
+    $('.view-post').css("opacity", "1");
+  }
+);
+
+$('.blog-image').hover(function(){
+    $( this ).find('.title').css("padding-bottom","1.5em");
+  }, function() {
+    $( this ).find('.title').css("padding-bottom","1em");
   }
 );
 </script>
