@@ -735,13 +735,13 @@ a.download:hover, a.support:hover, a.info:hover{
   
 }
 .griz-shows .show-item:not(.griz){
-  display:none;
+  display:none !important;
 }
 .manic-shows .show-item:not(.manic){
-  display:none;
+  display:none !important;
 }
 .floozies-shows .show-item:not(.floozies){
-  display:none;
+  display:none !important;
 }
 .select-style {
     padding: 0;
