@@ -21,7 +21,10 @@
 $('#blog').addClass('active');
 </script>
 <meta property="st:image" content="{{ item.image.url }}">
-<title>Liberated | {{ item.name }}</title>
+<title>{{ item.name }} | AllGood Records</title>
+<meta property="og:title"content="{{item.name}} | AllGood Records" />
+
+
 <style>
 .nav-identifier a{color:#e42c40 !important;}
 iframe{
@@ -64,13 +67,11 @@ iframe{
   {% if item.optional_gallery %}
     <h2>Gallery</h2>
     <div class="row">
-      {% for image in item.optional_gallery %}
-        <div class="col-md-3">
-          <a href="{{ image.url }}" class="thumbnail">
-            <img src="{{ image|imageCrop(200,200) }}" class="img-responsive">
-          </a>
-        </div>
-      {% endfor %}
+      <ul class="bxslider">
+        {% for image in item.optional_gallery %}           
+        <li><img src="{{ image|imageCrop(500,500) }}" class="img-responsive"></li>
+        {% endfor %}
+      </ul>
     </div>
   {% endif %}
 

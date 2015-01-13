@@ -1,14 +1,16 @@
 {% extends "templates/partials/base-1-column.html" %}
 
 {% block content %}
-<title>Liberated | About</title>
+<title>About | All Good Records</title>
+<meta property="og:title"content="About | AllGood Records" />
+
 <script>
 $('#about-us').addClass('active');
 </script>
 <section class="about">
     <div style="margin-top:25px; margin-bottom:25px; text-align:center;" class="col-xs-12 col-sm-8 col-md-8 col-lg-8 col-sm-offset-2 col-md-offset-2 col-lg-offset-2">
     <h1>What We're About</h1>
-    <p>{{about.manifesto}}</p>
+    <p>{{about.manifesto|safe}}</p>
     <br />
     <hr>
   </div>

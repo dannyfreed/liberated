@@ -14,9 +14,11 @@
 {# http://www.webhook.com/docs/template-inheritance-blocks/ #}
 {% extends "templates/partials/base.html" %}
 
-<title>Blog | AllGood Records</title>
+
 
 {% block content %}
+<title>Blog | All Good Records</title>
+<meta property="og:title"content="Blog | All Good Records" />
 <script>
 $('#blog').addClass('active');
 </script>
@@ -40,9 +42,14 @@ $('#blog').addClass('active');
   {% set categories = categories|sort("order", false) %}
 
 
-<div style="margin-bottom:20px;" class="row">
-  <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
-    <div style="top: -2px; position: relative; font-size: 12px;width:150px; display:inline-block" class="select-style">  
+<div style="margin-top:20px; margin-bottom:20px;" class="row">
+  <div class="col-xs-0 col-sm-4 col-md-4 col-lg-4">
+  </div>
+  <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
+    <h3 style="text-align:center"><span style="text-transform:capitalize;" id="article_category">All</span> Posts</h3>
+  </div>
+  <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
+    <div style="float:right; margin-right:15px; top: -2px; position: relative; font-size: 12px;width:150px; display:inline-block" class="blog-filter select-style"> 
       <select id="sort_by" name="sort_by">
         <option value="All" selected="selected">Sort By...</option>
         <option value="All">All</option>
@@ -57,16 +64,6 @@ $('#blog').addClass('active');
       </select>
     </div>
   </div>
-  <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
-    <h3 style="text-align:center"><span style="text-transform:capitalize;" id="article_category">All</span> Posts</h3>
-  </div>
-  <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
-    <!-- <form>
-      <input style="float:right; width:80%; height: 31px; top: -2px; position: relative; outline: none;" type="text" id="st-search-input" class="st-search-input">
-    </form> -->
-  </div>
-
-
 </div>
   {# This forloop can use any data from http:localhost:2000/cms/#/form/articles/ #}
 <span id="article-holder">
@@ -74,8 +71,9 @@ $('#blog').addClass('active');
     {% for object in data %}
       <div data-multicategory="{% for category in object.category%}{{category.name}} {% endfor %}" style="margin-bottom:50px;" class="blog-block col-xs-12 col-sm-12 col-md-12 col-lg-12">
         <p style="">{{ object.publish_date|date('M d Y') }}</p>
-        <h1 style="margin-bottom:10px;">{{object.name}}</h1>     
-          <div data-href="{{ url(object) }}" class="clickable blog-image" style="background-image:url('{{object.image.url}}')">
+        <h1 style="margin-bottom:10px;"><a href="{{ url(object) }}">{{object.name}}</a></h1>
+        <h5 style="margin-bottom:10px;">{{object.short_version}}</h5>     
+          <div data-href="{{ url(object) }}" class="clickable blog-image" style="background-position:center; background-image:url('{{object.image.url}}')">
             <div class="title">
               <!-- <h1>{{object.name}}</h1> -->
               <a class="view-post" href="{{ url(object) }}">View Post &rarr;</a>

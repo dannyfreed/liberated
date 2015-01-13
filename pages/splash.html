@@ -1,0 +1,52 @@
+{% extends "templates/partials/base-splash.html" %}
+
+{% block content %}
+<title>AllGood Records</title>
+<meta property="og:title"content="AllGood Records" />
+<meta property="og:image" content="http://www.allgoodrecords.com/webhook-uploads/1420867954561_allgoodrecs_splash3_FIN.gif" />
+<meta name="description" content="Located in the heart of Detroit, All Good Records is a soulful & creative label that curates and develops the spread of thoughtful artistry to the world.">
+
+<style>
+.play-pause-icon{
+  color:#b6b6b6;
+}
+.play-pause-button{
+  border-radius:50%;
+  border:10px solid #5b5b5b;
+  background:black;
+  width:120px;
+  height:120px;
+}
+</style>
+<img style="max-height:420px; margin-left:auto; margin-right:auto; display:block;" src="/static/images/assets/allgoodrecs_splash.gif" />
+<audio id="myTune">
+  <source src="/static/audio/10_feet_tall.ogg" type="audio/ogg">
+  <source src="/static/audio/10_feet_tall.mp3" type="audio/mpeg">
+Your browser does not support the audio element.
+</audio>
+
+<button style="margin-top:2em; margin-bottom:2em; margin-left:auto; margin-right:auto;" class="play-pause-button" type="button" onclick="aud_play_pause()"><i class="play-pause-icon fa fa-3x fa-play"></i></button>
+
+<p style="margin-top:2em; margin-bottom:2em"><a style="color:white" href="/home">Continue to site</a></p>
+
+<script>
+function aud_play_pause() {
+  var myAudio = document.getElementById("myTune");
+  if (myAudio.paused) {
+    myAudio.play();
+    $('.play-pause-icon').removeClass('fa-play');
+    $('.play-pause-icon').addClass('fa-pause');
+  } else {
+    myAudio.pause();
+    $('.play-pause-icon').removeClass('fa-pause');
+    $('.play-pause-icon').addClass('fa-play');
+  }
+  myAudio.addEventListener("ended", function() 
+     {
+          myAudio.currentTime = 0;
+          $('.play-pause-icon').removeClass('fa-pause');
+          $('.play-pause-icon').addClass('fa-play');
+     });
+}
+
+</script>

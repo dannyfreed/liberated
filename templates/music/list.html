@@ -18,7 +18,9 @@
 {% block title %}{% parent %} - music{% endblock %}
 
 {% block content %}
-<title>Liberated | Music</title>
+<title>Music | All Good Records</title>
+<meta property="og:title"content="Music | All Good Records" />
+<meta property="og:title"content="Located in the heart of Detroit, All Good Records is a soulful & creative label that curates and develops the spread of thoughtful artistry to the world." />
 <script>
 $('#music').addClass('active');
 </script>
@@ -67,7 +69,7 @@ $('#music').addClass('active');
       <a data-toggle="modal" data-target=".{{object.name|replace('\W', '-', 'g')}}" class="play-button {{object.name|replace(' ', '-', 'g')}}-button" href=""><div class="play-background"></div><i class="fa fa-play-circle fa-5x"></i></a>
     </div>
       <a style="border:1px solid #e42c40 !important;" class="col-xs-6 col-sm-6 col-md-6 col-lg-6 transition download btn" href="{{ object.download_link }}">Download</a>
-      <a class="col-xs-6 col-sm-6 col-md-6 col-lg-6 transition support btn" href="{{ object.artist_website }}">Support</a>
+      <a class="col-xs-6 col-sm-6 col-md-6 col-lg-6 transition support btn" target="_blank" href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=ETAULVA4MDH7S">Support</a>
   </div>
 
 

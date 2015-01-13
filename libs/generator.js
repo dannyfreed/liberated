@@ -17,6 +17,8 @@ var slug = require('uslug');
 var async = require('async');
 var spawn = require('win-spawn');
 var md5 = require('MD5');
+var $ = require('cheerio');
+var exec = require('child_process').exec;
 
 require('colors');
 
@@ -75,6 +77,7 @@ module.exports.generator = function (config, options, logger, fileParser) {
   var liveReloadPort = config.get('connect')['wh-server'].options.livereload;
   var websocket = null;
   var strictMode = false;
+  var productionFlag = false;
 
   this.versionString = null;
   this.cachedData = null;
@@ -197,6 +200,96 @@ module.exports.generator = function (config, options, logger, fileParser) {
     });
   };
 
+  var searchEntryStream = null;
+
+  this.openSearchEntryStream = function(callback) {
+    if(config.get('webhook').noSearch === true) {
+      callback();
+      return;
+    }
+
+    if(!fs.existsSync('./.build/.wh/')) {
+      mkdirp.sync('./.build/.wh/');
+    }
+
+    searchEntryStream = fs.createWriteStream('./.build/.wh/searchjson.js');
+
+    searchEntryStream.write('var tipuesearch = {"pages": [\n');
+
+    callback();
+  };
+
+
+  this.closeSearchEntryStream = function(callback) {
+    if(config.get('webhook').noSearch === true || !searchEntryStream) {
+      callback();
+      return;
+    }
+
+    searchEntryStream.end(']}');
+
+    searchEntryStream.on('close', function() {
+      callback();
+    });
+  };
+
+  var writeSearchEntry = function(outFile, output) {
+    if(config.get('webhook').noSearch === true || !searchEntryStream) {
+      return;
+    }
+
+    var endUrl = outFile.replace('./.build', '');
+
+    if(path.extname(endUrl) !== '.html' || endUrl === '/404.html' || endUrl.indexOf('/_wh_previews') === 0) {
+      return;
+    }
+
+    endUrl = endUrl.replace('index.html', '');
+
+    var content = $.load(output);
+
+    var title = content('title').text();
+    var bodyObj = content('body');
+
+    if(bodyObj.attr('data-search-index') === "false") {
+      return;
+    }
+
+    var specialChild = bodyObj.find('[data-search-index="true"]');
+
+    if(specialChild.length > 0) {
+      bodyObj = specialChild.first();
+    }
+
+    bodyObj.find('script').remove();
+    bodyObj.find('iframe').remove();
+    bodyObj.find('object').remove();
+    bodyObj.find('[data-search-index="false"]').remove();
+
+    var body = bodyObj.text().trim();
+    var tags = "";
+
+    if(content('meta[name="keywords"]').length > 0) {
+      tags = content('meta[name="keywords"]').attr('content');
+    }
+
+    if(searchEntryStream) {
+      var searchObj = {
+        title: title,
+        text: body,
+        tags: tags,
+        loc: endUrl
+      };
+
+      searchEntryStream.write(JSON.stringify(searchObj) + ',\n');
+
+      searchObj = null;
+    }
+
+    title = '';
+    body = '';
+  };
+
   /**
    * Writes an instance of a template to the build directory
    * @param  {string}   inFile     Template to read
@@ -220,6 +313,8 @@ module.exports.generator = function (config, options, logger, fileParser) {
       params.item = params._realGetItem(params.item._type, params.item._id, true);
     }
 
+    params.production = productionFlag;
+
     var output = '';
     try {
       output = swig.renderFile(inFile, params);
@@ -241,6 +336,7 @@ module.exports.generator = function (config, options, logger, fileParser) {
 
     mkdirp.sync(path.dirname(outFile));
     fs.writeFileSync(outFile, output);
+    writeSearchEntry(outFile, output);
 
     // Haha this crazy nonsense is to handle pagination, the swig function "paginate" makes
     // shouldPaginate return true if there are more pages left, so we enter a while loop to
@@ -273,6 +369,7 @@ module.exports.generator = function (config, options, logger, fileParser) {
 
       mkdirp.sync(path.dirname(outFile));
       fs.writeFileSync(outFile, output);
+      writeSearchEntry(outFile, output);
 
       swigFunctions.increasePage();
     }
@@ -352,61 +449,59 @@ module.exports.generator = function (config, options, logger, fileParser) {
 
       var entries = zip.getEntries();
 
-      if(fs.existsSync('.pages-old')) {
-        wrench.rmdirSyncRecursive('.pages-old');
-      }
+      removeDirectory('.pages-old', function() {
+        removeDirectory('.templates-old', function() {
+          removeDirectory('.static-old', function() {
 
-      if(fs.existsSync('.templates-old')) {
-        wrench.rmdirSyncRecursive('.templates-old');
-      }
+            try {
+              fs.renameSync('pages', '.pages-old');
+            } catch(error) {
+              fs.unlinkSync('.reset.zip');
+              callback(true);
+              return;
+            }
 
-      if(fs.existsSync('.static-old')) {
-        wrench.rmdirSyncRecursive('.static-old');
-      }
+            try {
+              fs.renameSync('templates', '.templates-old');
+            } catch(error) {
+              fs.renameSync('.pages-old', 'pages');
+              fs.unlinkSync('.reset.zip');
+              callback(true);
+              return;
+            }
 
-      try {
-        fs.renameSync('pages', '.pages-old');
-      } catch(error) {
-        fs.unlinkSync('.reset.zip');
-        callback(true);
-        return;
-      }
+            try {
+              fs.renameSync('static', '.static-old');
+            } catch(error) {
+              fs.renameSync('.pages-old', 'pages');
+              fs.renameSync('.templates-old', 'templates');
+              fs.unlinkSync('.reset.zip');
+              callback(true);
+              return;
+            }
 
-      try {
-        fs.renameSync('templates', '.templates-old');
-      } catch(error) {
-        fs.renameSync('.pages-old', 'pages');
-        fs.unlinkSync('.reset.zip');
-        callback(true);
-        return;
-      }
+            entries.forEach(function(entry) {
+              if(entry.entryName.indexOf('pages/') === 0
+                 || entry.entryName.indexOf('templates/') === 0
+                 || entry.entryName.indexOf('static/') === 0) {
+                zip.extractEntryTo(entry.entryName, '.', true, true);
+              }
+            });
 
-      try {
-        fs.renameSync('static', '.static-old');
-      } catch(error) {
-        fs.renameSync('.pages-old', 'pages');
-        fs.renameSync('.templates-old', 'templates');
-        fs.unlinkSync('.reset.zip');
-        callback(true);
-        return;
-      }
+            removeDirectory('.pages-old', function() {
+              removeDirectory('.templates-old', function() {
+                removeDirectory('.static-old', function() {
+                  fs.unlinkSync('.reset.zip');
 
-      entries.forEach(function(entry) {
-        if(entry.entryName.indexOf('pages/') === 0
-           || entry.entryName.indexOf('templates/') === 0
-           || entry.entryName.indexOf('static/') === 0) {
-          zip.extractEntryTo(entry.entryName, '.', true, true);
-        }
-      });
+                  self.init(config.get('webhook').siteName, config.get('webhook').secretKey, true, config.get('webhook').firebase, function() {
+                    callback();
+                  });
+                });
+              });
+            });
 
-      wrench.rmdirSyncRecursive('.pages-old');
-      wrench.rmdirSyncRecursive('.templates-old');
-      wrench.rmdirSyncRecursive('.static-old');
-
-      fs.unlinkSync('.reset.zip');
-
-      self.init(config.get('webhook').siteName, config.get('webhook').secretKey, true, config.get('webhook').firebase, function() {
-        callback();
+          });
+        });
       });
     });
   };
@@ -764,6 +859,28 @@ module.exports.generator = function (config, options, logger, fileParser) {
     callback();
   };
 
+  var removeDirectory = function(directory, callback) {
+    var isWin = /^win/.test(process.platform);
+
+    if(isWin) {
+      exec('rmdir /s /q ' + directory, function(err) {
+
+        if(err) {
+          if(fs.existsSync(directory)) {
+            wrench.rmdirSyncRecursive(directory);
+          }
+        }
+        callback();
+      });
+    } else {
+      if(fs.existsSync(directory)) {
+        wrench.rmdirSyncRecursive(directory);
+      }
+
+      callback();
+    }
+  }
+
   /**
    * Cleans the build directory
    * @param  {Function}   done     Callback passed either a true value to indicate its done, or an error
@@ -772,13 +889,10 @@ module.exports.generator = function (config, options, logger, fileParser) {
   this.cleanFiles = function(done, cb) {
       logger.ok('Cleaning files');
 
-      if(fs.existsSync('.build'))
-      {
-        wrench.rmdirSyncRecursive('.build');
-      }
-
-      if (cb) cb();
-      if (done) done(true);
+      removeDirectory('.build', function() {
+        if (cb) cb();
+        if (done) done(true);
+      });
   };
 
   /**
@@ -790,11 +904,17 @@ module.exports.generator = function (config, options, logger, fileParser) {
     // clean files
     self.cachedData = null;
     self.cleanFiles(null, function() {
-      self.renderTemplates(null, function() {
-        self.copyStatic(function() {
-          self.renderPages(done, cb);
+      self.openSearchEntryStream(function() {
+        self.renderTemplates(null, function() {
+          self.copyStatic(function() {
+            self.renderPages(function() {}, function() {
+              self.closeSearchEntryStream(function() {
+                cb(done);
+              });
+            });
+          });
         });
-      });
+      })
     });
   };
 
@@ -861,8 +981,18 @@ module.exports.generator = function (config, options, logger, fileParser) {
       widgetFiles[(path.dirname(item) + '/' + path.basename(item, '.html')).replace('./', '')] = true;
     });
 
-    var renderWidget = function(controlType, fieldName, controlInfo) {
-      var widgetString = _.template(fs.readFileSync('./libs/widgets/' + controlType + '.html'), { value: 'item.' + fieldName, controlInfo: controlInfo });
+    var renderWidget = function(controlType, fieldName, controlInfo, overridePrefix) {
+      var controls = [];
+
+      if(controlInfo.controls) {
+        _.each(controlInfo.controls, function(item) {
+          controls[item.name] = item;
+        });
+      }
+
+      var prefix = overridePrefix || 'item.';
+
+      var widgetString = _.template(fs.readFileSync('./libs/widgets/' + controlType + '.html'), { value: prefix + fieldName, controlInfo: controlInfo, renderWidget: renderWidget, controls: controls, widgetFiles: widgetFiles });
 
       var lines = widgetString.split('\n');
       var newLines = [];
@@ -1130,8 +1260,14 @@ module.exports.generator = function (config, options, logger, fileParser) {
       confFile = fs.readFileSync('./libs/.firebase-custom.conf.jst');
     }
 
+    var noSearch = null;
+
+    if(oldConf.noSearch !== null && typeof oldConf.noSearch !== 'undefined') {
+      noSearch = oldConf.noSearch;
+    }
+
     // TODO: Grab bucket information from server eventually, for now just use the site name
-    var templated = _.template(confFile, { secretKey: secretkey, siteName: sitename, firebase: firebase, embedlyKey: oldConf.embedly || 'your-embedly-key', serverAddr: oldConf.server || 'your-server-address' });
+    var templated = _.template(confFile, { secretKey: secretkey, siteName: sitename, firebase: firebase, embedlyKey: oldConf.embedly || 'your-embedly-key', serverAddr: oldConf.server || 'your-server-address', noSearch: noSearch });
 
     fs.writeFileSync('./.firebase.conf', templated);
 
@@ -1152,76 +1288,77 @@ module.exports.generator = function (config, options, logger, fileParser) {
    * Sets up asset generation (automatic versioning) for pushing to production
    * @param  {Object}    grunt  Grunt object from generatorTasks
    */
-  this.assets = function(grunt) {
+  this.assets = function(grunt, done) {
 
-    if(fs.existsSync('.whdist')) {
-      wrench.rmdirSyncRecursive('.whdist');
-    }
+    removeDirectory('.whdist', function() {
 
-    mkdirp.sync('.whdist');
+      mkdirp.sync('.whdist');
 
-    var files = wrench.readdirSyncRecursive('pages');
+      var files = wrench.readdirSyncRecursive('pages');
 
-    files.forEach(function(file) {
-      var originalFile = 'pages/' + file;
-      var destFile = '.whdist/pages/' + file;
+      files.forEach(function(file) {
+        var originalFile = 'pages/' + file;
+        var destFile = '.whdist/pages/' + file;
 
-      if(!fs.lstatSync(originalFile).isDirectory())
-      {
-        var content = fs.readFileSync(originalFile);
+        if(!fs.lstatSync(originalFile).isDirectory())
+        {
+          var content = fs.readFileSync(originalFile);
 
-        if(path.extname(originalFile) === '.html') {
-          content = content.toString();
-          content = content.replace('\r\n', '\n').replace('\r', '\n');
+          if(path.extname(originalFile) === '.html') {
+            content = content.toString();
+            content = content.replace('\r\n', '\n').replace('\r', '\n');
+          }
+
+          mkdirp.sync(path.dirname(destFile));
+          fs.writeFileSync(destFile, content);
         }
+      });
 
-        mkdirp.sync(path.dirname(destFile));
-        fs.writeFileSync(destFile, content);
-      }
-    });
+      files = wrench.readdirSyncRecursive('templates');
 
-    files = wrench.readdirSyncRecursive('templates');
+      files.forEach(function(file) {
+        var originalFile = 'templates/' + file;
+        var destFile = '.whdist/templates/' + file;
 
-    files.forEach(function(file) {
-      var originalFile = 'templates/' + file;
-      var destFile = '.whdist/templates/' + file;
+        if(!fs.lstatSync(originalFile).isDirectory())
+        {
+          var content = fs.readFileSync(originalFile);
 
-      if(!fs.lstatSync(originalFile).isDirectory())
-      {
-        var content = fs.readFileSync(originalFile);
+          if(path.extname(originalFile) === '.html') {
+            content = content.toString();
+            content = content.replace('\r\n', '\n').replace('\r', '\n');
+          }
 
-        if(path.extname(originalFile) === '.html') {
-          content = content.toString();
-          content = content.replace('\r\n', '\n').replace('\r', '\n');
+          mkdirp.sync(path.dirname(destFile));
+          fs.writeFileSync(destFile, content);
         }
+      });
 
-        mkdirp.sync(path.dirname(destFile));
-        fs.writeFileSync(destFile, content);
-      }
-    });
+      files = wrench.readdirSyncRecursive('static');
 
-    files = wrench.readdirSyncRecursive('static');
+      files.forEach(function(file) {
+        var originalFile = 'static/' + file;
+        var destFile = '.whdist/static/' + file;
 
-    files.forEach(function(file) {
-      var originalFile = 'static/' + file;
-      var destFile = '.whdist/static/' + file;
+        if(!fs.lstatSync(originalFile).isDirectory())
+        {
+          var content = fs.readFileSync(originalFile);
 
-      if(!fs.lstatSync(originalFile).isDirectory())
-      {
-        var content = fs.readFileSync(originalFile);
+          if(path.extname(originalFile) === '.html') {
+            content = content.toString();
+            content = content.replace('\r\n', '\n').replace('\r', '\n');
+          }
 
-        if(path.extname(originalFile) === '.html') {
-          content = content.toString();
-          content = content.replace('\r\n', '\n').replace('\r', '\n');
+          mkdirp.sync(path.dirname(destFile));
+          fs.writeFileSync(destFile, content);
         }
+      });
 
-        mkdirp.sync(path.dirname(destFile));
-        fs.writeFileSync(destFile, content);
-      }
+      grunt.task.run('useminPrepare');
+      grunt.task.run('assetsMiddle');
+
+      done();
     });
-
-    grunt.task.run('useminPrepare');
-    grunt.task.run('assetsMiddle');
 
   }
 
@@ -1258,20 +1395,20 @@ module.exports.generator = function (config, options, logger, fileParser) {
    * Finish asset versioning
    * @param  {Object}    grunt  Grunt object from generatorTasks
    */
-  this.assetsAfter = function(grunt) {
-    if(fs.existsSync('.tmp')) {
-      wrench.rmdirSyncRecursive('.tmp');
-    }
+  this.assetsAfter = function(grunt, done) {
+    removeDirectory('.tmp', function() {
+      var files = wrench.readdirSyncRecursive('static');
 
-    var files = wrench.readdirSyncRecursive('static');
+      files.forEach(function(file) {
+        var filePath = 'static/' + file;
+        var distPath = '.whdist/static/' + file;
+        if(!fs.lstatSync(filePath).isDirectory() && !fs.existsSync(distPath)) {
+          var fileData = fs.readFileSync(filePath);
+          fs.writeFileSync(distPath, fileData);
+        }
+      });
 
-    files.forEach(function(file) {
-      var filePath = 'static/' + file;
-      var distPath = '.whdist/static/' + file;
-      if(!fs.lstatSync(filePath).isDirectory() && !fs.existsSync(distPath)) {
-        var fileData = fs.readFileSync(filePath);
-        fs.writeFileSync(distPath, fileData);
-      }
+      done();
     });
   }
 
@@ -1282,6 +1419,9 @@ module.exports.generator = function (config, options, logger, fileParser) {
     strictMode = true;
   }
 
+  this.enableProduction = function() {
+    productionFlag = true;
+  }
 
   return this;
 };

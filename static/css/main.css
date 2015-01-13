@@ -186,11 +186,11 @@ header{
 }
 .releases{
   text-align:center;
-  margin-top:25px;
 }
 .release-block{
-  margin-bottom:40px;
-  min-height:340px;
+  /*margin-bottom:40px;*/
+  margin-bottom:15px;
+  min-height:343px;
 }
 .release-block > .holder{
   margin-bottom:2px; width:100%; height:250px; background-position:center; background-size:cover; 
@@ -200,9 +200,9 @@ header{
 	font-size:14px;
 }
 .article-block{
-  min-height:320px;
+  min-height:350px;
   /*border-bottom:1px solid #eee;*/
-  margin-bottom:25px;
+  /*margin-bottom:25px;*/
 }
 a{
 	color:black;
@@ -731,6 +731,7 @@ a.download:hover, a.support:hover, a.info:hover{
 /*END MUSIC*/
 
 /*TICKETS PAGE*/
+
 .show{
   
 }
@@ -772,6 +773,10 @@ a.download:hover, a.support:hover, a.info:hover{
 }
 .show-table{
   margin-bottom:6em;
+}
+.table-responsive
+{
+    overflow-x: auto;
 }
 /*END TICKETS*/
 
@@ -898,7 +903,34 @@ a.download:hover, a.support:hover, a.info:hover{
     padding-top:25px !important;
     padding-bottom:25px !important;
   }
+  .navbar-nav li a{
+    font-size:1.5em;
+  }
+  .blog-filter{
+    display:block !important;
+    float:none !important;
+    margin-left:auto !important;
+    margin-right:auto !important;
+    margin-top:15px;
+  }
+  .mobile-table{
+    display:table;
+  }
+  .desktop-table{
+    display:none !important;
+  }
 }
+/*FOR TICKETS ONLY*/
+@media(min-width:769px){
+  .mobile-table{
+    display:none !important;
+  }
+  .desktop-table{
+    display:table !important;
+  }
+}
+/*END FOR TICKETS ONLY*/
+
 @media (min-width:768px) and (max-width: 992px){
   .artist-info-holder{
     padding-top:83.25px !important;
@@ -908,6 +940,9 @@ a.download:hover, a.support:hover, a.info:hover{
   .artist-info-holder{
     padding-top:124.5px !important;
   }
+}
+.tickets-button, .merch-button{
+
 }
 /*END artists list page */
 
@@ -927,7 +962,7 @@ a.download:hover, a.support:hover, a.info:hover{
 .title{
   position:absolute;
   bottom:0;
-  background:rgba(0,0,0,0.4);
+  background:rgba(0,0,0,0.67);
   width:100%;
   color:white;
   padding:1em;
@@ -1267,5 +1302,214 @@ zoom: 1;
 -webkit-box-shadow: rgba(0, 0, 0, 0.0980392) 0px 1px 1px 0px, rgba(255, 255, 255, 0.0470588) 1px 0px 0px 0px inset, rgba(255, 255, 255, 0.0470588) -1px 0px 0px 0px inset, rgba(255, 255, 255, 0.2) 0px 1px 0px 0px inset;
 }
 
+
+/*gallery slider images for blog posts*/
+/**
+ * BxSlider v4.1.2 - Fully loaded, responsive content slider
+ * http://bxslider.com
+ *
+ * Written by: Steven Wanderski, 2014
+ * http://stevenwanderski.com
+ * (while drinking Belgian ales and listening to jazz)
+ *
+ * CEO and founder of bxCreative, LTD
+ * http://bxcreative.com
+ */
+
+
+/** RESET AND LAYOUT
+===================================*/
+
+.bx-wrapper {
+  position: relative;
+  margin: 0 auto 60px;
+  padding: 0;
+  *zoom: 1;
+}
+
+.bx-wrapper img {
+  max-width: 100%;
+  display: block;
+}
+
+/** THEME
+===================================*/
+
+.bx-wrapper .bx-viewport {
+  -moz-box-shadow: 0 0 5px #ccc;
+  -webkit-box-shadow: 0 0 5px #ccc;
+  box-shadow: 0 0 5px #ccc;
+  border:  5px solid #fff;
+  left: -5px;
+  background: #fff;
+  max-width:500px;
+  margin-left:auto;
+  margin-right: auto;
+  
+  /*fix other elements on the page moving (on Chrome)*/
+  -webkit-transform: translatez(0);
+  -moz-transform: translatez(0);
+      -ms-transform: translatez(0);
+      -o-transform: translatez(0);
+      transform: translatez(0);
+}
+
+.bx-wrapper .bx-pager,
+.bx-wrapper .bx-controls-auto {
+  position: absolute;
+  bottom: -30px;
+  width: 100%;
+}
+
+/* LOADER */
+
+.bx-wrapper .bx-loading {
+  min-height: 50px;
+  background: url(images/bx_loader.gif) center center no-repeat #fff;
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 2000;
+}
+
+/* PAGER */
+
+.bx-wrapper .bx-pager {
+  text-align: center;
+  font-size: .85em;
+  font-family: Arial;
+  font-weight: bold;
+  color: #666;
+  padding-top: 20px;
+}
+
+.bx-wrapper .bx-pager .bx-pager-item,
+.bx-wrapper .bx-controls-auto .bx-controls-auto-item {
+  display: inline-block;
+  *zoom: 1;
+  *display: inline;
+}
+
+.bx-wrapper .bx-pager.bx-default-pager a {
+  background: #666;
+  text-indent: -9999px;
+  display: block;
+  width: 10px;
+  height: 10px;
+  margin: 0 5px;
+  outline: 0;
+  -moz-border-radius: 5px;
+  -webkit-border-radius: 5px;
+  border-radius: 5px;
+}
+
+.bx-wrapper .bx-pager.bx-default-pager a:hover,
+.bx-wrapper .bx-pager.bx-default-pager a.active {
+  background: #000;
+}
+
+/* DIRECTION CONTROLS (NEXT / PREV) */
+
+.bx-wrapper .bx-prev {
+  left: 10px;
+  background: url(images/controls.png) no-repeat 0 -32px;
+}
+
+.bx-wrapper .bx-next {
+  right: 10px;
+  background: url(images/controls.png) no-repeat -43px -32px;
+}
+
+.bx-wrapper .bx-prev:hover {
+  background-position: 0 0;
+}
+
+.bx-wrapper .bx-next:hover {
+  background-position: -43px 0;
+}
+
+.bx-wrapper .bx-controls-direction a {
+  position: absolute;
+  top: 50%;
+  margin-top: -16px;
+  outline: 0;
+  width: 32px;
+  height: 32px;
+  text-indent: -9999px;
+  z-index: 9999;
+}
+
+.bx-wrapper .bx-controls-direction a.disabled {
+  display: none;
+}
+
+/* AUTO CONTROLS (START / STOP) */
+
+.bx-wrapper .bx-controls-auto {
+  text-align: center;
+}
+
+.bx-wrapper .bx-controls-auto .bx-start {
+  display: block;
+  text-indent: -9999px;
+  width: 10px;
+  height: 11px;
+  outline: 0;
+  background: url(images/controls.png) -86px -11px no-repeat;
+  margin: 0 3px;
+}
+
+.bx-wrapper .bx-controls-auto .bx-start:hover,
+.bx-wrapper .bx-controls-auto .bx-start.active {
+  background-position: -86px 0;
+}
+
+.bx-wrapper .bx-controls-auto .bx-stop {
+  display: block;
+  text-indent: -9999px;
+  width: 9px;
+  height: 11px;
+  outline: 0;
+  background: url(images/controls.png) -86px -44px no-repeat;
+  margin: 0 3px;
+}
+
+.bx-wrapper .bx-controls-auto .bx-stop:hover,
+.bx-wrapper .bx-controls-auto .bx-stop.active {
+  background-position: -86px -33px;
+}
+
+/* PAGER WITH AUTO-CONTROLS HYBRID LAYOUT */
+
+.bx-wrapper .bx-controls.bx-has-controls-auto.bx-has-pager .bx-pager {
+  text-align: left;
+  width: 80%;
+}
+
+.bx-wrapper .bx-controls.bx-has-controls-auto.bx-has-pager .bx-controls-auto {
+  right: 0;
+  width: 35px;
+}
+
+/* IMAGE CAPTIONS */
+
+.bx-wrapper .bx-caption {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  background: #666\9;
+  background: rgba(80, 80, 80, 0.75);
+  width: 100%;
+}
+
+.bx-wrapper .bx-caption span {
+  color: #fff;
+  font-family: Arial;
+  display: block;
+  font-size: .85em;
+  padding: 10px;
+}
 
 

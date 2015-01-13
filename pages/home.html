@@ -1,0 +1,212 @@
+{# YOUR HOMEPAGE #}
+
+{# First time seeing extend or blocks? Want to know how it works? Tutorial here: http://www.webhook.com #}
+{% extends "templates/partials/base.html" %}
+
+{% block content %}
+<title>All Good Records</title>
+<meta property="og:title"content="All Good Records" />
+<meta property="og:image" content="http://www.allgoodrecords.com/webhook-uploads/1420867954561_allgoodrecs_splash3_FIN.gif" />
+<meta name="description" content="Located in the heart of Detroit, All Good Records is a soulful & creative label that curates and develops the spread of thoughtful artistry to the world.">
+
+<script>
+$('#life').addClass('active');
+</script>
+
+
+  {# Copy this to any page you want articles data on. #}
+  {% set data = get('articles') %}
+
+  {# Sort by most recently published.#}
+  {% set data = data|sort("publish_date", true)%}
+
+  {% set featured_data = data %}
+
+
+  {% set releases = get('music') %}
+
+  {% set releases = releases|where('featured_release', 'Yes') %}
+
+  {% set releases = releases|sort("publish_date", true) %}
+
+
+
+
+  {% set categories = get('categories') %}
+
+  {% set categories = categories|exclude('name', 'Other') %}
+
+  {% set categories = categories|sort("order", false) %}
+
+
+  {% set shows = cms.shows %}
+  
+  {% set shows = shows|sort('date_time', false) %}
+
+  {% if data.length %}
+
+    {# Output articles sorted by most recent publish date #}
+
+
+
+
+  <ul data-swiftype-index='false' class="pgwSlider">
+  {% for object in featured_data|where('featured_article','Yes') %}
+    <li><a href="{{ url(object) }}"><img src="{{ object.image.url }}" alt="{{ object.name }}" data-description="Posted on {{ object.publish_date|date('M. jS') }}" /></a></li>
+  {% endfor %}  
+  </ul>
+
+
+<hr>
+<h3 style="text-align:center"><a href="/blog">Posts</a></h3>
+<hr>
+
+<span id="article-holder">
+  <section data-swiftype-index='false' class="articles">
+  {% for object in data|slice(0,6) %}
+        <div data-multicategory="{% for category in object.category%}{{category.name}} {% endfor %}"class="article-block col-xs-12 col-sm-6 col-md-4 col-lg-4">
+          <a class="image-link" href="{{ url(object) }}">
+            <div class="home-pic" style="background-image:url('{{ object.image.url }}'); background-size:cover;width:100%; margin-bottom:10px;"></div>
+          </a>
+            <a href="{{ url(object) }}">
+              <h2 style="font-size:25px;font-family: 'Neuton', serif !important;">{{ object.name }}</h2>
+            </a>
+
+          <p style="margin-top:4px;" class="lead">
+            {{ object.short_version }}
+          </p>
+      </div>
+  {% endfor %}
+  </section>
+</span>
+
+
+  <section data-swiftype-index='false' class="releases">
+    <hr>
+      <h3 style="margin-bottom:20px; text-align:center;"><a href="/music">Releases</a></h3>
+    <hr>
+
+    {% for release in releases|slice(0,6) %}
+    <div data-artist="{{release.soundcloud_url.author_name|replace(' ', '-', 'g')}}" class="release-block col-xs-12 col-sm-6 col-md-6 col-lg-4">      
+      <div class="holder" style="background-image:url(' {{release.soundcloud_url.thumbnail_url}} ');">
+        <a data-toggle="modal" data-target=".{{release.name|replace('\W', '-', 'g')}}" class="play-button {{release.name|replace(' ', '-', 'g')}}-button" href=""><div class="play-background"></div><i class="fa fa-play-circle fa-5x"></i></a>
+      </div>
+      {% if release.artist_allgoodrecs_only %}
+        <div>
+          <h2 style="font-size:25px;font-family: 'Neuton', serif !important;">
+            <a href="{{ url(release.artist_allgoodrecs_only) }}">{{ release.artist_allgoodrecs_only.name }}</a>
+          </h2>
+          <h5>{{release.name}}</h5>
+        </div>
+      {% else %}
+        <div ><h5>{{ release.soundcloud_url.author_name }} - {{ release.name }}</h5></div>
+      {% endif %}      
+    </div>
+
+
+    <!--dynamic modal-->
+    <div class="{{release.name|replace('\W', '-', 'g')}} modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          {{release.soundcloud_url.html|safe}}
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+
+  </section>
+
+<!--tickets-->
+
+<section data-swiftype-index='false' class="tickets">
+  <hr>
+    <h3 style="margin-bottom:20px; text-align:center;"><a href="/shows">Tickets</a></h3>
+  <div class="table-responsive">
+    <table class="table show-table">
+    {{foo}}
+    {% for show in shows %}
+      {% for relation in show.artist %}
+          <tr data-date="{{ show.date_time|date('M j Y')}}"class="show-item">
+            <td style="width:100px;"><img src="{{ relation.image|imageCrop(80) }}" /></td>
+            <td style="width:100px;"><span style="font-size:1.1em; font-weight:500; text-transform:uppercase">{{ show.date_time|date('M' )}}</span> <br /> <span style="font-size:1.8em; font-weight:700;">{{ show.date_time|date('d' )}}</span> <br /> <span style="font-size:1.1em; font-weight:500;">{{ show.date_time|date('Y' )}}</span></td>
+            <td style="padding-top:20px; font-size:1.8em; font-weight:700" class="show" data-artist="{{relation.name}}">{{ relation.name }}
+            <span style="font-size:15px; font-weight:500;"><br />
+            <address>
+              {%if show.location.city %}
+                {{ show.location.city }}, {{ show.location.state }}
+                {%else %}
+                {{ show.location.street1 }}
+              {% endif %}
+            </address></span>
+            </td>
+            <td style="width:400px; font-size:15px; font-weight:500;">{{ show.name }}</td>
+            <td style="width:150px;"><a class="btn btn-primary btn-lg" style="text-transform:uppercase;" target="_blank" href="{{ show.tickets_link }}">tickets</a></td>
+          </tr>
+
+            
+      {% endfor %}
+
+    {% endfor %}
+    </table>
+  </div>
+</section>
+
+<script>
+
+
+
+</script>
+
+
+
+<div class="pagination">
+    {# The actual pagination template, feel free to edit or replace the default one. #}
+    {% include "templates/partials/paginator.html" %}
+  {% else %}
+    <h2>Nothing to see here</h2>
+    <a href="/cms/">Duder, go add some articles to the CMS</a>
+  {% endif %} <!--checking if theres data-->
+
+</div>
+
+<script>
+$("#sort_by").change(function(){
+  var type_to_display = $(this).val();
+  $('.articles').attr('class','articles');
+  $('.articles').addClass(type_to_display);
+
+  var activetype = $('#article-holder > section').attr('class');
+  var updatedType = activetype.replace("articles ", "");
+
+  $('#article_category').text(updatedType);
+
+
+//go through each article block, hide if doesn't have a class that matches updatedType
+  $('.article-block').each(function(){
+    if ( updatedType === "All"){
+      $(this).css("display","block");
+    }
+    else if( $(this).hasClass(updatedType) ){
+      $(this).css("display","block");
+    }
+    else{
+      $(this).css("display","none");
+    }
+
+  });
+});
+</script>
+
+
+
+  <script>
+    //add category data from webhook as a class
+  $('.article-block').each(function () {
+      var multicategory = $(this).data("multicategory");
+      $(this).addClass(multicategory);   
+  });
+  </script>
+
+
+
+{% endblock %}

@@ -1,5 +1,5 @@
 
-var curVersion = 'v47';
+var curVersion = 'v50';
 
 var request = require('request');
 
@@ -44,11 +44,25 @@ module.exports = function(grunt) {
 
   grunt.registerTask('buildTemplates', 'Generate static files from templates directory', function() {
     var done = this.async();
+
+    var production = grunt.option('production');
+
+    if(production === true) {
+      generator.enableProduction();
+    }
+
     generator.renderTemplates(done, generator.reloadFiles);
   });
 
   grunt.registerTask('buildPages', 'Generate static files from pages directory', function() {
     var done = this.async();
+
+    var production = grunt.option('production');
+
+    if(production === true) {
+      generator.enableProduction();
+    }
+
     generator.renderPages(done, generator.reloadFiles);
   });
 
@@ -104,6 +118,12 @@ module.exports = function(grunt) {
       generator.enableStrictMode();
     }
 
+    var production = grunt.option('production');
+
+    if(production === true) {
+      generator.enableProduction();
+    }
+
     checkVersion(function() {
       generator.buildBoth(done, generator.reloadFiles);
     })
@@ -111,7 +131,8 @@ module.exports = function(grunt) {
 
   // Change this to optionally prompt instead of requiring a sitename
   grunt.registerTask('assets', 'Initialize the firebase configuration file (installer should do this as well)', function() {
-    generator.assets(grunt);
+    var done = this.async();
+    generator.assets(grunt, done);
   });
 
   grunt.registerTask('assetsMiddle', 'Initialize the firebase configuration file (installer should do this as well)', function() {
@@ -119,7 +140,8 @@ module.exports = function(grunt) {
   });
 
   grunt.registerTask('assetsAfter', 'Initialize the firebase configuration file (installer should do this as well)', function() {
-    generator.assetsAfter(grunt);
+    var done = this.async();
+    generator.assetsAfter(grunt, done);
   });
 
   // Change this to optionally prompt instead of requiring a sitename

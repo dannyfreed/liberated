@@ -12,7 +12,9 @@
 {# This sets our page <title>. It will append this artists's name to the site title defined in base.html #}
 {% block title %}{% parent %} - {{ item.name }}{% endblock %}
 {% block content %}
-<title>AllGood | {{ item.name }}</title>
+<title>{{ item.name }} | All Good Records</title>
+<meta property="og:title"content="{{ item.name }} | All Good Records" />
+<meta property="og:description" content="{{item.description}}" />
 <script>
 $('#artists').addClass('active');
 </script>
@@ -23,8 +25,8 @@ $('#artists').addClass('active');
 
     <div style="padding-top:20px; padding-left:5%; padding-right:5%; text-align:center;" class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
       <h1 style="margin-bottom:10px; text-align:left; text-decoration:underline;">{{item.name}}</h1>
-      <img style="margin-top:10px; margin-bottom:20px; margin-left:0;" class="img-responsive" src="{{ item.image|imageSize(300) }}" />
-      <p style="text-align:left;">{{item.description}}</p>
+      <img style="margin-top:10px; margin-bottom:20px; margin-left:0;" class="img-responsive" src="{{ item.image.url }}" />
+      <p style="text-align:center;">{{item.description}}</p>
       
       <div class="tickets-button">
         <a style="margin-top:10px; width:55%;" class="btn btn-primary" href="/shows">Tickets</a>
@@ -41,25 +43,26 @@ $('#artists').addClass('active');
         <h4><span style="margin-left:10px; margin-top:10px; font-weight:700; float:left;"><i style="margin-right:5px;" class="fa fa-instagram"></i>Photos</span> <a target="_blank" class="insta-follow-button" style="margin-top:8px; margin-right:10px; float:right;"href="http://instagram.com/{{item.instagram_username}}">Follow</a></h4>
       </div>
       {% set curUrl = getCurrentUrl() %}
+
       {% if curUrl|endsWith('/griz/') %}
       <div class="artist-feed" id="griz-feed">
       </div>
       <a href="javascript:void(0);" class="load-more btn btn-secondary" id="load-moreGRIZ">Load More</a>
       {% elseif curUrl|endsWith('/manic-focus/') %}
-      <div class="artist-feed" id="manic-feed">
+      <div class="artist-feed" id="manic-feed"></div>
       <a href="javascript:void(0);" class="load-more btn btn-secondary" id="load-moreMANIC">Load More</a>
-      </div>
+
       {% elseif curUrl|endsWith('/the-floozies/') %}
-      <div class="artist-feed" id="floozies-feed">
+      <div class="artist-feed" id="floozies-feed"></div>  
       <a href="javascript:void(0);" class="load-more btn btn-secondary" id="load-moreFLOOZIES">Load More</a>
-      </div>  
+
       {% endif %}
     </div>
    
   </div>    
     
 
-    <div style="padding-top:65px; text-align:center; "class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+    <div style="padding-top:20px; text-align:center; "class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
         {% for relation in item.music_artist_allgoodrecs_only %}
           {# You can ouput more than just the name. Feel free to output more fields from the CMS. #}
           <div style="margin-bottom:40px;">

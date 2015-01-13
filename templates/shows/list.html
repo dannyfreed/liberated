@@ -15,7 +15,9 @@
 {% extends "templates/partials/base-1-column.html" %}
 
 {% block content %}
-<title>Liberated | Shows</title>
+<title>Tickets | All Good Records</title>
+<meta property="og:title"content="Tickets | All Good Records" />
+<meta property="og:title"content="Located in the heart of Detroit, All Good Records is a soulful & creative label that curates and develops the spread of thoughtful artistry to the world." />
 <script>
 $('#tickets').addClass('active');
 </script>
@@ -33,10 +35,9 @@ $('#tickets').addClass('active');
 <section class="container">
   <h1>List of shows</h1>
     <div style="margin-top:20px; margin-bottom:20px;">
-      <h4 style="position:relative; top:-9px; margin-right:10px; margin-top:0; margin-bottom:0; display:inline-block">Filter by Artist:</h4>
       <div style="display:inline-block" class="select-style">  
         <select id="show_artists" name="show_artists">
-          <option value="" selected="selected">Select An Artist</option>
+          <option value="" selected="selected">Filter by Artist</option>
           <option value="all">All</option>
           <option value="griz">GRiZ</option>
           <option value="floozies">The Floozies</option>
@@ -46,16 +47,12 @@ $('#tickets').addClass('active');
     </div>
   {# This forloop can use any data from http:localhost:2000/cms/#/form/shows/ #}
   <div class="table-responsive">
-    <table class="table show-table">
-
-
-
-
+    <table class="desktop-table table show-table">
     {% for object in data %}
       {% for relation in object.artist %}
-          <tr data-date="{{ object.date_time|date('M j Y')}}"class="show-item">
-            <td style="width:100px;"><img src="{{ relation.image|imageCrop(80) }}" /></td>
-            <td style="width:100px;"><span style="font-size:1.1em; font-weight:500; text-transform:uppercase">{{ object.date_time|date('M' )}}</span> <br /> <span style="font-size:1.8em; font-weight:700;">{{ object.date_time|date('d' )}}</span> <br /> <span style="font-size:1.1em; font-weight:500;">{{ object.date_time|date('Y' )}}</span></td>
+          <tr data-date="{{ object.date_time|date('M j Y')}}"class="non-mobile-only show-item">
+            <td style=""><img src="{{ relation.image|imageCrop(80) }}" /></td>
+            <td style=""><span style="font-size:1.1em; font-weight:500; text-transform:uppercase">{{ object.date_time|date('M' )}}</span> <br /> <span style="font-size:1.8em; font-weight:700;">{{ object.date_time|date('d' )}}</span> <br /> <span style="font-size:1.1em; font-weight:500;">{{ object.date_time|date('Y' )}}</span></td>
             <td style="padding-top:20px; font-size:1.8em; font-weight:700" class="show" data-artist="{{relation.name}}">{{ relation.name }}
             <!--<td>{{ object.date_time|date('g:i A') }}</td>-->
             <span style="font-size:15px; font-weight:500;"><br />
@@ -67,15 +64,41 @@ $('#tickets').addClass('active');
               {% endif %}
             </address></span>
             </td>
-            <td style="width:400px; font-size:15px; font-weight:500;">{{ object.name }}</td>
-            <td style="width:150px;"><a class="btn btn-primary btn-lg" style="text-transform:uppercase;" target="_blank" href="{{ object.tickets_link }}">tickets</a></td>
+            <td style=" font-size:15px; font-weight:500;">{{ object.name }}</td>
+            <td style=""><a class="btn btn-primary btn-lg" style="text-transform:uppercase;" target="_blank" href="{{ object.tickets_link }}">tickets</a></td>
           </tr>
-            <!--<li class="show"data-artist="{{relation.name}}"><a href="{{ url(object) }}">{{ object.name }}</a></li>
-         <a href="{{ url(relation) }}">{{ relation.name }}</a>{% if not loop.last %},{% endif %}-->
+
+          
         {% endfor %}
     {% endfor %}
     </table>
 </div>
+
+  <div class="table-responsive">
+    <table class="mobile-table table show-table">
+    {% for show in data %}
+      {% for relation in show.artist %}
+        <tr data-date="{{ show.date_time|date('M j Y')}}"class="mobile-only show-item">
+            <td style=""><span style="font-size:0.8em; font-weight:500; text-transform:uppercase">{{ show.date_time|date('M' )}}</span> <br /> <span style="font-size:1.2em; font-weight:700;">{{ show.date_time|date('d' )}}</span> <br /> <span style="font-size:0.8em; font-weight:500;">{{ show.date_time|date('Y' )}}</span></td>
+            <td style="padding-top:20px; font-size:1.4em; font-weight:700" class="show" data-artist="{{relation.name}}">{{ relation.name }}
+            <span style="font-size:13px; font-weight:500;"><br />
+            <address>
+              {%if show.location.city %}
+                {{ show.location.city }}, {{ show.location.state }}
+                {%else %}
+                {{ show.location.street1 }}
+              {% endif %}
+            </address></span>
+            </td>
+            <td style=""><a class="btn btn-primary" style="text-transform:uppercase;" target="_blank" href="{{ object.tickets_link }}">tickets</a></td>
+          </tr>
+
+          
+        {% endfor %}
+    {% endfor %}
+    </table>
+</div>
+
 
 </section>
   {# The actual pagination template, feel free to edit or replace the default one. #}
