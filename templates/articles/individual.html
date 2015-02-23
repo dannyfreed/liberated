@@ -66,13 +66,11 @@ iframe{
 
   {% if item.optional_gallery %}
     <h2>Gallery</h2>
-    <div class="row">
-      <ul class="bxslider">
-        {% for image in item.optional_gallery %}           
-        <li><img src="{{ image|imageCrop(500,500) }}" class="img-responsive"></li>
-        {% endfor %}
-      </ul>
-    </div>
+    <ul style="padding:0 !important;" class="bxslider">
+      {% for image in item.optional_gallery %}       
+        <li><img src="{{ image.url }}" class="img-responsive" /></li>
+      {% endfor %}
+    </ul>
   {% endif %}
 
 

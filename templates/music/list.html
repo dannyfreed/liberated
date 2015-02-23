@@ -58,7 +58,7 @@ $('#music').addClass('active');
   </div>
 <section class="music-blocks">
     {% for object in data %}
-  <div data-artist="{{object.soundcloud_url.author_name|replace(' ', '-', 'g')}}"style="padding-left:5%; padding-right:5%; margin-bottom:50px;" class="music-block text-centered col-xs-12 col-sm-4 col-md-4 col-lg-4">
+  <div data-artist="{{object.artist_allgoodrecs_only.name|replace(' ', '-', 'g')}}"style="padding-left:5%; padding-right:5%; margin-bottom:50px;" class="music-block text-centered col-xs-12 col-sm-4 col-md-4 col-lg-4">
       {% if object.artist_allgoodrecs_only %}
           <div style="display:table;height:35px; width:100%; margin-bottom:5px;"><h5 style="display: table-cell; vertical-align:middle; "><a href="{{ url(object.artist_allgoodrecs_only) }}">{{ object.artist_allgoodrecs_only.name }}</a> - {{ object.name }}</h5></div>
       {% else %}
